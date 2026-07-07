@@ -1,145 +1,1327 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>错分挽救数据分析报告</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>奖罚明细报告</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #e2e8f0; min-height: 100vh; padding: 2rem; }
-.container { max-width: 1200px; margin: 0 auto; }
-h1 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.subtitle { text-align: center; color: #94a3b8; margin-bottom: 2rem; font-size: 0.95rem; }
-.overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-.card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.25rem; text-align: center; }
-.card .value { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
-.card .label { font-size: 0.85rem; color: #94a3b8; }
-.blue { color: #38bdf8; }
-.green { color: #4ade80; }
-.red { color: #f87171; }
-.yellow { color: #facc15; }
-.purple { color: #a78bfa; }
-.section { margin-bottom: 2rem; }
-.section h2 { font-size: 1.25rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(56,189,248,0.3); color: #38bdf8; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.03); border-radius: 8px; overflow: hidden; }
-th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
-th { background: rgba(56,189,248,0.1); color: #38bdf8; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px; }
-td { font-size: 0.9rem; }
-tr:hover td { background: rgba(255,255,255,0.03); }
-.bar-container { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-.bar-label { width: 140px; font-size: 0.85rem; text-align: right; color: #cbd5e1; flex-shrink: 0; }
-.bar-wrapper { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; height: 24px; overflow: hidden; }
-.bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.8rem; font-weight: 600; color: white; transition: width 0.3s ease; }
-.bar-count { margin-left: 0.5rem; font-size: 0.85rem; color: #94a3b8; min-width: 30px; }
-.tag { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 500; margin-right: 0.5rem; }
-.tag-blue { background: rgba(56,189,248,0.15); color: #38bdf8; }
-.tag-green { background: rgba(74,222,128,0.15); color: #4ade80; }
-.tag-red { background: rgba(248,113,113,0.15); color: #f87171; }
-.tag-yellow { background: rgba(250,204,21,0.15); color: #facc15; }
-.findings { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-.findings li { padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 6px; }
-footer { text-align: center; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; font-size: 0.8rem; }
-@media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .overview { grid-template-columns: repeat(2, 1fr); } }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1d2129;padding:16px}
+.container{max-width:960px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1e40af 0%,#3b82f6 50%,#60a5fa 100%);border-radius:14px;padding:22px 28px;color:#fff;margin-bottom:16px;box-shadow:0 4px 20px rgba(30,64,175,.25)}
+.header h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.header .sub{font-size:12px;opacity:.8}
+
+.kpi-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.kpi{flex:1 1 22%;min-width:140px;background:#fff;border-radius:10px;padding:14px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.kpi l{display:block;font-size:11px;color:#86909c;margin-bottom:4px}
+.kpi v{display:block;font-size:22px;font-weight:700}
+.kpi.g v{color:#00b42a}
+.kpi.r v{color:#f53f3f}
+.kpi.b v{color:#165dff}
+.kpi.o v{color:#ff7d00}
+
+.section{margin-bottom:16px}
+.section h2{font-size:15px;font-weight:600;padding:10px 0 8px;border-bottom:2px solid #e5e6eb;margin-bottom:10px}
+.section h2.g{color:#00b42a;border-bottom-color:#b7eb8f}
+.section h2.r{color:#f53f3f;border-bottom-color:#ffa39e}
+
+.group{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f0f0f0}
+.group-head .name{font-size:14px;font-weight:600}
+.group-head .stats{font-size:12px;color:#86909c}
+.group-head .stats b{color:#1d2129}
+
+.person-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:6px;margin-bottom:4px;font-size:13px}
+.person-row.g{background:linear-gradient(90deg,#f0fdf4,#f0fdf4 40%,transparent)}
+.person-row.r{background:linear-gradient(90deg,#fef2f2,#fef2f2 40%,transparent)}
+.person-row .info{display:flex;gap:8px;align-items:center}
+.person-row .name{font-weight:600}
+.person-row .role{font-size:11px;color:#86909c}
+.person-row .amount{font-weight:700;font-size:14px}
+.person-row .amount.g{color:#00b42a}
+.person-row .amount.r{color:#f53f3f}
+.person-row .count{font-size:11px;color:#86909c;margin-left:6px}
+
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;color:#fff}
+.tag.g{background:#00b42a}
+.tag.r{background:#f53f3f}
+
+.footer{text-align:center;font-size:11px;color:#b0b4bf;padding:16px 0 8px}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>错分挽救数据分析报告</h1>
-<p class="subtitle">数据周期：2026-07-01 至 2026-07-06 ｜ 数据来源：错分挽救明细表（导出时间 202607071805）</p>
-
-<div class="overview">
-<div class="card"><div class="value blue">379</div><div class="label">总错分票数</div></div>
-<div class="card"><div class="value green">83</div><div class="label">已挽救</div></div>
-<div class="card"><div class="value red">296</div><div class="label">未挽救</div></div>
-<div class="card"><div class="value yellow">21.9%</div><div class="label">挽救率</div></div>
-<div class="card"><div class="value red">42</div><div class="label">超时票</div></div>
-<div class="card"><div class="value purple">11.1%</div><div class="label">超时率</div></div>
+<div class="header">
+<h1>三亚佳翔转运站 - 奖罚明细报告</h1>
+<div class="sub">20260701 ~ 20260706 | 三亚佳翔转运站 8981V</div>
 </div>
 
-<div class="grid-2">
-<div class="section">
-<h2>每日错分趋势</h2>
-<div class="bar-container"><div class="bar-label">07-01</div><div class="bar-wrapper"><div class="bar" style="width:50.9%;background:#38bdf8;">56</div></div></div>
-<div class="bar-container"><div class="bar-label">07-02</div><div class="bar-wrapper"><div class="bar" style="width:100%;background:#818cf8;">110</div></div></div>
-<div class="bar-container"><div class="bar-label">07-03</div><div class="bar-wrapper"><div class="bar" style="width:56.4%;background:#4ade80;">62</div></div></div>
-<div class="bar-container"><div class="bar-label">07-04</div><div class="bar-wrapper"><div class="bar" style="width:32.7%;background:#facc15;">36</div></div></div>
-<div class="bar-container"><div class="bar-label">07-05</div><div class="bar-wrapper"><div class="bar" style="width:37.3%;background:#f87171;">41</div></div></div>
-<div class="bar-container"><div class="bar-label">07-06</div><div class="bar-wrapper"><div class="bar" style="width:67.3%;background:#a78bfa;">74</div></div></div>
-</div>
-<div class="section">
-<h2>错分类型分布</h2>
-<div class="bar-container"><div class="bar-label">标记72</div><div class="bar-wrapper"><div class="bar" style="width:100%;background:#38bdf8;">276</div></div></div>
-<div class="bar-container"><div class="bar-label">3S识别错分且标记72</div><div class="bar-wrapper"><div class="bar" style="width:37.3%;background:#f87171;">103</div></div></div>
-</div>
-</div>
-
-<div class="grid-2">
-<div class="section">
-<h2>错分原因分布</h2>
-<table><thead><tr><th>错分原因</th><th>票数</th><th>占比</th></tr></thead><tbody>
-<tr><td>SSS错分</td><td>87</td><td>22.9%</td></tr>
-<tr><td>设备错分-错建包(飘件)</td><td>16</td><td>4.2%</td></tr>
-<tr><td>人工错分-漏卸(装对)</td><td>9</td><td>2.4%</td></tr>
-<tr><td>人工错分-错建包(扫对)</td><td>8</td><td>2.1%</td></tr>
-<tr><td>人工错分-漏巴枪</td><td>4</td><td>1.1%</td></tr>
-<tr><td>SSS错分-地址不详</td><td>3</td><td>0.8%</td></tr>
-<tr><td>人工错分-错装车(扫对)</td><td>1</td><td>0.3%</td></tr>
-<tr><td>人工错分-错建包(强装)</td><td>1</td><td>0.3%</td></tr>
-</tbody></table>
-</div>
-<div class="section">
-<h2>解决方式分布</h2>
-<div class="bar-container"><div class="bar-label">回中转场</div><div class="bar-wrapper"><div class="bar" style="width:100%;background:#4ade80;">111</div></div></div>
-<div class="bar-container"><div class="bar-label">上报客服</div><div class="bar-wrapper"><div class="bar" style="width:70.3%;background:#38bdf8;">78</div></div></div>
-<div class="bar-container"><div class="bar-label">FVP204核销</div><div class="bar-wrapper"><div class="bar" style="width:60.4%;background:#818cf8;">67</div></div></div>
-<div class="bar-container"><div class="bar-label">FVP30核销</div><div class="bar-wrapper"><div class="bar" style="width:45.9%;background:#facc15;">51</div></div></div>
-<div class="bar-container"><div class="bar-label">核销完成</div><div class="bar-wrapper"><div class="bar" style="width:31.5%;background:#a78bfa;">35</div></div></div>
-<div class="bar-container"><div class="bar-label">FVP44核销</div><div class="bar-wrapper"><div class="bar" style="width:18.9%;background:#f87171;">21</div></div></div>
-<div class="bar-container"><div class="bar-label">同城派送</div><div class="bar-wrapper"><div class="bar" style="width:3.6%;background:#2dd4bf;">4</div></div></div>
-</div>
-</div>
-
-<div class="grid-2">
-<div class="section">
-<h2>挽救时长分布</h2>
-<div class="bar-container"><div class="bar-label">8-10小时</div><div class="bar-wrapper"><div class="bar" style="width:100%;background:#f87171;">23</div></div></div>
-<div class="bar-container"><div class="bar-label">10小时以上</div><div class="bar-wrapper"><div class="bar" style="width:56.5%;background:#facc15;">13</div></div></div>
-<div class="bar-container"><div class="bar-label">6-8小时</div><div class="bar-wrapper"><div class="bar" style="width:26.1%;background:#fb923c;">6</div></div></div>
-<div class="bar-container"><div class="bar-label">2-4小时</div><div class="bar-wrapper"><div class="bar" style="width:17.4%;background:#38bdf8;">4</div></div></div>
-<div class="bar-container"><div class="bar-label">4-6小时</div><div class="bar-wrapper"><div class="bar" style="width:17.4%;background:#818cf8;">4</div></div></div>
-<p style="margin-top: 0.75rem; font-size: 0.85rem; color: #94a3b8;">共 50 票有挽救时长记录，76% 超过 8 小时</p>
-</div>
-<div class="section">
-<h2>上报网点 TOP 10</h2>
-<div class="bar-container"><div class="bar-label">营业点</div><div class="bar-wrapper"><div class="bar" style="width:100%;background:#38bdf8;">150</div></div></div>
-<div class="bar-container"><div class="bar-label">营运站</div><div class="bar-wrapper"><div class="bar" style="width:29.3%;background:#818cf8;">44</div></div></div>
-<div class="bar-container"><div class="bar-label">营业站</div><div class="bar-wrapper"><div class="bar" style="width:20.7%;background:#4ade80;">31</div></div></div>
-<div class="bar-container"><div class="bar-label">综合网点</div><div class="bar-wrapper"><div class="bar" style="width:9.3%;background:#facc15;">14</div></div></div>
-<div class="bar-container"><div class="bar-label">智谷综合营业店</div><div class="bar-wrapper"><div class="bar" style="width:6.7%;background:#a78bfa;">10</div></div></div>
-<div class="bar-container"><div class="bar-label">藤桥营业店</div><div class="bar-wrapper"><div class="bar" style="width:6%;background:#f87171;">9</div></div></div>
-<div class="bar-container"><div class="bar-label">迎宾路营业店</div><div class="bar-wrapper"><div class="bar" style="width:5.3%;background:#fb923c;">8</div></div></div>
-<div class="bar-container"><div class="bar-label">津海建材城营业店</div><div class="bar-wrapper"><div class="bar" style="width:5.3%;background:#2dd4bf;">8</div></div></div>
-<div class="bar-container"><div class="bar-label">海棠风塘营业店</div><div class="bar-wrapper"><div class="bar" style="width:4%;background:#e879f9;">6</div></div></div>
-<div class="bar-container"><div class="bar-label">招商海月营业店</div><div class="bar-wrapper"><div class="bar" style="width:4%;background:#34d399;">6</div></div></div>
-</div>
+<div class="kpi-row">
+<div class="kpi b"><l>涉及人数</l><v>82</v></div>
+<div class="kpi"><l>总笔数</l><v>587</v></div>
+<div class="kpi g"><l>奖励总额</l><v>2099.32元</v></div>
+<div class="kpi"><l>奖励笔数</l><v>441</v></div>
+<div class="kpi r"><l>处罚总额</l><v>721.89元</v></div>
+<div class="kpi"><l>处罚笔数</l><v>146</v></div>
+<div class="kpi r"><l>净额</l><v>1377.44元</v></div>
+<div class="kpi o"><l>奖罚事项</l><v>12项</v></div>
 </div>
 
 <div class="section">
-<h2>关键发现</h2>
-<div class="card" style="text-align: left; padding: 1.5rem;">
-<ul class="findings">
-<li><span class="tag tag-red">风险</span> 7月2日错分峰值达 110 票，占总量 29%，需关注当日操作异常</li>
-<li><span class="tag tag-yellow">关注</span> 挽救率仅 21.9%，近八成错分票未能挽救，挽回效率有待提升</li>
-<li><span class="tag tag-yellow">关注</span> SSS错分占比 22.9%（87票），设备错建包(飘件) 16 票，建议检查分拣设备运行状态</li>
-<li><span class="tag tag-blue">时效</span> 超时票 42 票（11.1%），挽救时长集中在 8-10 小时区间，平均处理周期偏长</li>
-<li><span class="tag tag-blue">责任</span> 网点派送环节责任占比最高（113票，29.8%），其次是 898Y 中转场（82票，21.6%）</li>
-<li><span class="tag tag-green">亮点</span> 超时率控制在 11.1%，大部分错分票在规定时间内得到处理</li>
-</ul>
+<h2 class="g">奖励明细</h2>
+<div class="group">
+<div class="group-head">
+<span class="name">损坏改善奖励</span>
+<span class="stats">共 <b>9</b> 人 / <b>9</b> 笔 / <b style="color:#00b42a">1166.00元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">郑庆定</span>
+<span class="role">运作组长</span>
 </div>
+<div>
+<span class="amount g">443.08元</span>
+<span class="count">1笔</span>
 </div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈宏涛</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">349.80元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">郑杰</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">128.26元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈俊强</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">81.62元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王和隆</span>
+<span class="role">数据信息组长</span>
+</div>
+<div>
+<span class="amount g">81.62元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高泽灵</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">46.64元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王永锦</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">11.66元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">11.66元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">11.66元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">错发-奖励</span>
+<span class="stats">共 <b>12</b> 人 / <b>19</b> 笔 / <b style="color:#00b42a">400.95元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王永锦</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">84.75元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">熊静</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">72.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">江远源</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">54.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄雪玉</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">54.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄香莹</span>
+<span class="role">数据信息员</span>
+</div>
+<div>
+<span class="amount g">36.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">30.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高泽灵</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">18.45元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">15.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王俊</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">11.25元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">李子林</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">9.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王和隆</span>
+<span class="role">数据信息组长</span>
+</div>
+<div>
+<span class="amount g">9.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈宏涛</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">7.50元</span>
+<span class="count">2笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">摆轮错摆快件二次复核-人工</span>
+<span class="stats">共 <b>30</b> 人 / <b>97</b> 笔 / <b style="color:#00b42a">213.00元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">廖小妹</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">22.00元</span>
+<span class="count">11笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高春祖</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">21.00元</span>
+<span class="count">9笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">付立强</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">21.00元</span>
+<span class="count">9笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈川杰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">14.00元</span>
+<span class="count">8笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">曾祖裕</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">12.00元</span>
+<span class="count">6笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">李正保</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">12.00元</span>
+<span class="count">6笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">史红芬</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">11.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">田佳</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">11.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">岑克杰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">席雪荣</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">张淑娟</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">肖彩燕</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">8.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈宏涛</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">7.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄震雨</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">5.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">傅人河</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">5.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">欧其绕</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">潘辅琼</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">梁丰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">符茂</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">薛利利</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">胡博</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">林志</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高春年</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">刘振勇</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">林亚芳</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王婷婷</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄侯</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">郭敬玉</span>
+<span class="role">运作员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">李云春</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">董欣益</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">航空大件操作质量-奖励</span>
+<span class="stats">共 <b>9</b> 人 / <b>151</b> 笔 / <b style="color:#00b42a">151.00元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">蒙柳</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">57.00元</span>
+<span class="count">57笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">邓文辉</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">44.00元</span>
+<span class="count">44笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">朱丽</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">13.00元</span>
+<span class="count">13笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">熊静</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">12.00元</span>
+<span class="count">12笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">严义华</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">12.00元</span>
+<span class="count">12笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">骆伟强</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">5.00元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高翔</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈思铮</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">3.00元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">李子林</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">1.00元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">冷媒修复</span>
+<span class="stats">共 <b>8</b> 人 / <b>88</b> 笔 / <b style="color:#00b42a">88.00元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈威龙</span>
+<span class="role">特殊包装员</span>
+</div>
+<div>
+<span class="amount g">29.00元</span>
+<span class="count">29笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">徐纪军</span>
+<span class="role">中转客户需求处理员</span>
+</div>
+<div>
+<span class="amount g">26.00元</span>
+<span class="count">26笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">张晋玮</span>
+<span class="role">特殊包装员</span>
+</div>
+<div>
+<span class="amount g">18.00元</span>
+<span class="count">18笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">吴乾伟</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">7.00元</span>
+<span class="count">7笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">符露</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">倪德高</span>
+<span class="role">中转客户需求处理员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">刘海琳</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">2笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">错分-奖励</span>
+<span class="stats">共 <b>7</b> 人 / <b>12</b> 笔 / <b style="color:#00b42a">67.50元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">郑杰</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">17.50元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈道伟</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">12.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">郑庆定</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">王俊</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">10.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">岑克杰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">孙谋全</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">2笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">双面单拦截</span>
+<span class="stats">共 <b>7</b> 人 / <b>11</b> 笔 / <b style="color:#00b42a">10.00元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">高春祖</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">4.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">钟玉杰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">2.00元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">张垂州</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">1.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">廖小妹</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">1.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">付立强</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">1.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈海丽</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">1.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">刘亚宽</span>
+<span class="role">中转客户需求处理员</span>
+</div>
+<div>
+<span class="amount g">0.00元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">扁平件保障-奖励</span>
+<span class="stats">共 <b>14</b> 人 / <b>54</b> 笔 / <b style="color:#00b42a">2.87元</b></span>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">0.60元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount g">0.42元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">符露</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.21元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">朱善秋</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.21元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">倪婷</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.21元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">董云雾</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.21元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">范梅燕</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.20元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">孙雨</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.17元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">黄垂媚</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.17元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">林璨璨</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.16元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">徐素莎</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.16元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">赖银亮</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.09元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">潘辅琼</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.05元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row g">
+<div class="info">
+<span class="name">符玲</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount g">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div></div></div>
 
-<footer>生成时间：2026-07-07 ｜ 领慧助手 Cowork ｜ 共分析 379 条错分挽救记录</footer>
+<div class="section">
+<h2 class="r">处罚明细</h2>
+<div class="group">
+<div class="group-head">
+<span class="name">违规操作</span>
+<span class="stats">共 <b>13</b> 人 / <b>56</b> 笔 / <b style="color:#f53f3f">658.00元</b></span>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">郑庆定</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">120.00元</span>
+<span class="count">11笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈宏涛</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">80.00元</span>
+<span class="count">5笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">田礼强</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">郑杰</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">9笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">佘贵祥</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">廖文洁</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王正铠</span>
+<span class="role">座叉司机</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈川杰</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">李政伟</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">严义华</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">50.00元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈俊强</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">30.00元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王和隆</span>
+<span class="role">数据信息组长</span>
+</div>
+<div>
+<span class="amount r">18.00元</span>
+<span class="count">20笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王永锦</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">10.00元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">损坏（含内投）</span>
+<span class="stats">共 <b>8</b> 人 / <b>65</b> 笔 / <b style="color:#f53f3f">37.61元</b></span>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">高泽灵</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">12.42元</span>
+<span class="count">6笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈俊强</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">9.50元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王和隆</span>
+<span class="role">数据信息组长</span>
+</div>
+<div>
+<span class="amount r">6.65元</span>
+<span class="count">49笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">3.06元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王永锦</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">2.13元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">郑庆定</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">1.85元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">1.69元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">郑杰</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">0.30元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">航空大件操作质量-处罚</span>
+<span class="stats">共 <b>2</b> 人 / <b>5</b> 笔 / <b style="color:#f53f3f">25.00元</b></span>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">韩松成</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">20.00元</span>
+<span class="count">4笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈贤庄</span>
+<span class="role">数据信息员</span>
+</div>
+<div>
+<span class="amount r">5.00元</span>
+<span class="count">1笔</span>
+</div>
+</div></div><div class="group">
+<div class="group-head">
+<span class="name">扁平件未保障-处罚</span>
+<span class="stats">共 <b>14</b> 人 / <b>20</b> 笔 / <b style="color:#f53f3f">1.28元</b></span>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">黄垂媚</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.29元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">邓文辉</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.28元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">陈明</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">0.27元</span>
+<span class="count">3笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">范梅燕</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.15元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">黄朱清</span>
+<span class="role">运作组长</span>
+</div>
+<div>
+<span class="amount r">0.12元</span>
+<span class="count">2笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">王世妹</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.07元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">朱丽</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.07元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">符露</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">朱善秋</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">孙雨</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">倪婷</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">林璨璨</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">徐素莎</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div><div class="person-row r">
+<div class="info">
+<span class="name">董云雾</span>
+<span class="role">分拣员</span>
+</div>
+<div>
+<span class="amount r">0.01元</span>
+<span class="count">1笔</span>
+</div>
+</div></div></div>
+
+<div class="footer">领慧助手 | 数据来源：奖罚明细报表</div>
 </div>
 </body>
 </html>
