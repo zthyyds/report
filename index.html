@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>看板访问指南</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; padding: 24px 16px; }
+.container { max-width: 640px; margin: 0 auto; }
+h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #0052d9; }
+.card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card h2 { font-size: 17px; color: #0052d9; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card h2 .badge { background: #0052d9; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: normal; }
+p { font-size: 14px; color: #555; margin-bottom: 8px; }
+.step { font-size: 14px; color: #333; background: #f0f5ff; border-left: 3px solid #0052d9; padding: 10px 14px; border-radius: 0 6px 6px 0; margin-top: 8px; }
+.highlight { color: #0052d9; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>看板访问问题解决方案</h1>
+
+<div class="card">
+<h2><span class="badge">推荐</span> 根本解决：使用 HTTPS 证书</h2>
+<p>如果这个看板是长期使用的，建议联系 IT 部门或看板开发者为该内网服务配置 SSL 证书。</p>
+<div class="step">操作：将 <span class="highlight">http://</span> 改为 <span class="highlight">https://</span>，并安装受信任的证书。这样浏览器就不会再报红。</div>
+</div>
+
+<div class="card">
+<h2>领慧助手 "公网映射" 功能</h2>
+<p>如果您希望外部也能访问，或者避免内网 IP 的证书问题：</p>
+<div class="step">操作：在领慧助手客户端中，检查生成看板的 Skill 是否支持 <strong>"生成公网分享链接"</strong>。<br>如果有，请使用生成的 <span class="highlight">https://ai.sf-express.com/...</span> 开头的链接，这种链接是公司统一认证的，不会出现不安全提示。</div>
+</div>
+</div>
+</body>
+</html>
