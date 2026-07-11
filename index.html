@@ -3,35 +3,457 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>看板访问指南</title>
+<title>中转客诉异常分析总结与改善方案</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; padding: 24px 16px; }
-.container { max-width: 640px; margin: 0 auto; }
-h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #0052d9; }
-.card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.card h2 { font-size: 17px; color: #0052d9; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.card h2 .badge { background: #0052d9; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: normal; }
-p { font-size: 14px; color: #555; margin-bottom: 8px; }
-.step { font-size: 14px; color: #333; background: #f0f5ff; border-left: 3px solid #0052d9; padding: 10px 14px; border-radius: 0 6px 6px 0; margin-top: 8px; }
-.highlight { color: #0052d9; font-weight: 600; }
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #334155;
+    --border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --red: #f87171;
+    --orange: #fb923c;
+    --yellow: #fbbf24;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --purple: #c084fc;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header { text-align: center; padding: 60px 20px 40px; position: relative; }
+  .header h1 { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+  .header p { color: var(--text-dim); font-size: 1rem; }
+  .header .date-badge { display: inline-block; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent); margin-top: 12px; }
+
+  /* Summary Cards */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 30px 0; }
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; transition: transform 0.2s, border-color 0.2s; }
+  .summary-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .summary-card .num { font-size: 2.4rem; font-weight: 800; }
+  .summary-card .label { color: var(--text-dim); font-size: 0.9rem; margin-top: 4px; }
+  .c-red .num { color: var(--red); }
+  .c-orange .num { color: var(--orange); }
+  .c-yellow .num { color: var(--yellow); }
+  .c-green .num { color: var(--green); }
+  .c-blue .num { color: var(--blue); }
+
+  /* Section */
+  .section { margin: 40px 0; }
+  .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; padding-left: 14px; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 10px; }
+  .section-title .icon { font-size: 1.2rem; }
+
+  /* Bar Chart */
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { width: 160px; text-align: right; font-size: 0.85rem; color: var(--text-dim); flex-shrink: 0; }
+  .bar-track { flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px; height: 28px; position: relative; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-size: 0.8rem; font-weight: 600; color: #fff; transition: width 1s ease; min-width: 60px; }
+  .bar-value { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--text-dim); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead { background: rgba(56, 189, 248, 0.08); }
+  th { padding: 12px 14px; text-align: left; font-weight: 600; color: var(--accent); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 10px 14px; border-bottom: 1px solid rgba(51,65,85,0.5); vertical-align: top; }
+  tr:hover td { background: rgba(56, 189, 248, 0.03); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; }
+  .tag-red { background: rgba(248,113,113,0.15); color: var(--red); }
+  .tag-orange { background: rgba(251,146,60,0.15); color: var(--orange); }
+  .tag-yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+  .tag-green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .tag-blue { background: rgba(96,165,250,0.15); color: var(--blue); }
+
+  /* Solution Card */
+  .sol-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .sol-card h3 { font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .sol-card .sol-list { list-style: none; padding: 0; }
+  .sol-card .sol-list li { padding: 8px 0 8px 24px; position: relative; color: var(--text-dim); font-size: 0.9rem; border-bottom: 1px solid rgba(51,65,85,0.3); }
+  .sol-card .sol-list li:last-child { border-bottom: none; }
+  .sol-card .sol-list li::before { content: ""; position: absolute; left: 4px; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .sol-card .sol-list li strong { color: var(--text); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 30px; }
+  .timeline::before { content: ""; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 24px; }
+  .timeline-item::before { content: ""; position: absolute; left: -24px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  .timeline-item h4 { font-size: 0.95rem; color: var(--text); margin-bottom: 4px; }
+  .timeline-item p { font-size: 0.85rem; color: var(--text-dim); }
+
+  /* Highlight box */
+  .highlight-box { background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.08)); border: 1px solid rgba(56,189,248,0.2); border-radius: 12px; padding: 20px 24px; margin: 20px 0; }
+  .highlight-box h3 { color: var(--accent); margin-bottom: 8px; }
+  .highlight-box p { color: var(--text-dim); font-size: 0.9rem; }
+
+  /* Pie-like donut */
+  .donut-row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0; }
+  .donut-item { text-align: center; }
+  .donut-item .ring { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+  .donut-item .ring-label { font-size: 0.8rem; color: var(--text-dim); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.5rem; }
+    .bar-label { width: 100px; font-size: 0.75rem; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>看板访问问题解决方案</h1>
 
-<div class="card">
-<h2><span class="badge">推荐</span> 根本解决：使用 HTTPS 证书</h2>
-<p>如果这个看板是长期使用的，建议联系 IT 部门或看板开发者为该内网服务配置 SSL 证书。</p>
-<div class="step">操作：将 <span class="highlight">http://</span> 改为 <span class="highlight">https://</span>，并安装受信任的证书。这样浏览器就不会再报红。</div>
+  <!-- Header -->
+  <div class="header">
+    <h1>中转客诉异常分析总结与改善方案</h1>
+    <p>基于时效客诉明细 + 安全管理方法论 + 八大类型标准操作规范</p>
+    <div class="date-badge">数据周期：近期中转客诉统计 | 总客诉量 100,289 票</div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card c-red">
+      <div class="num">100,289</div>
+      <div class="label">时效客诉总量</div>
+    </div>
+    <div class="summary-card c-orange">
+      <div class="num">29.8%</div>
+      <div class="label">跨班次落货占比 (Top 1)</div>
+    </div>
+    <div class="summary-card c-yellow">
+      <div class="num">14.1%</div>
+      <div class="label">错发-操作占比 (Top 2)</div>
+    </div>
+    <div class="summary-card c-blue">
+      <div class="num">9.7%</div>
+      <div class="label">运力应上未上占比 (Top 3)</div>
+    </div>
+    <div class="summary-card c-green">
+      <div class="num">46</div>
+      <div class="label">方法论改善项总数</div>
+    </div>
+  </div>
+
+  <!-- Section 1: 时效客诉分布 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9644;</span> 一、时效客诉 TOP 16 分布</div>
+    <p style="color:var(--text-dim); margin-bottom:20px; font-size:0.9rem;">前3大问题（跨班次落货 + 错发操作 + 运力应上未上）合计占比 <strong style="color:var(--red);">53.6%</strong>，是改善的绝对重点。</p>
+
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+
+  <!-- Section 2: 核心问题深度剖析 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9888;</span> 二、核心问题深度剖析</div>
+
+    <!-- 跨班次落货 -->
+    <div class="sol-card">
+      <h3><span class="tag tag-red">TOP 1</span> 跨班次落货 — 29,909票 (29.8%)</h3>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">定义：</strong>快件实际发出的运力班次晚于计划班次，或实际发出时间晚于计划时间。</p>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">根因分析：</strong></p>
+      <ul class="sol-list">
+        <li><strong>清场不及时</strong>：回流区、小件区、NC区、医院区、卸车区在各时间节点未严格清零，导致快件滞留到下一班次</li>
+        <li><strong>集中到车/踩点到车</strong>：车辆集中到达时卸车能力饱和，来不及在本班次内完成分拣发运</li>
+        <li><strong>车辆满载溢出</strong>：装车区容量不够，快件溢出后无法及时装车</li>
+        <li><strong>处理能力饱和</strong>：高峰期处理时长不足，卸车到发运全链路拥堵</li>
+      </ul>
+      <div class="highlight-box" style="margin-top:16px;">
+        <h3>可行方案</h3>
+        <p>1. <strong>死守清场时间线</strong>：每个卡位向前压缩5分钟清场，各卡位人员互用支援，NC区多频次高密度转运至装车区</p>
+        <p>2. <strong>前端快慢剥离</strong>：陆运枢纽场地进行快件分流，卡点车辆沟通压车延后发运，航空枢纽换小车型提频发运</p>
+        <p>3. <strong>中门抢货神器</strong>：每个场地标配1-2个，用于14-30吨+车型最后1小时到车抢货</p>
+        <p>4. <strong>大方车协同</strong>：进港大方车直发线路提前提交协同需求（小件包放车尾/快产品放车尾），核查处理时长是否达标</p>
+        <p>5. <strong>动态清场跟进</strong>：建立清场小组，班次结束前30分钟重点监控高时效产品清场情况</p>
+      </div>
+    </div>
+
+    <!-- 错发操作 -->
+    <div class="sol-card">
+      <h3><span class="tag tag-orange">TOP 2</span> 错发-操作 — 14,157票 (14.1%)</h3>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">定义：</strong>静态线路A-B，实际到达C，界定A责任。简单说就是"装错了车"。</p>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">根因分析：</strong></p>
+      <ul class="sol-list">
+        <li><strong>扫对线路错装车</strong>：巴枪未校验或强装导致流向错误</li>
+        <li><strong>漏巴错装</strong>：逐票扫描遗漏，快件未过巴枪直接装车</li>
+        <li><strong>经停未隔离</strong>：经停线路没有用雨膜/隔离网进行物理隔离，到经停点时错卸漏卸</li>
+        <li><strong>分拣计划错误</strong>：摆轮分拣计划维护不及时，网点变更后未同步更新</li>
+        <li><strong>供件不规范</strong>：小件区供件人员操作不标准，异型件/轻飘件上线导致飘件</li>
+      </ul>
+      <div class="highlight-box" style="margin-top:16px;">
+        <h3>可行方案</h3>
+        <p>1. <strong>强制巴枪校验</strong>：装车口逐票过巴枪，禁止强装，系统提示风险时必须上报组长审核</p>
+        <p>2. <strong>物理隔离</strong>：装车口张贴醒目流向标识，划分囤货区域，使用隔离网/雨膜/防损板进行物理区隔</p>
+        <p>3. <strong>熟练工上岗</strong>：建包、解包、装车等关键岗位安排自有或熟练工，降低新人失误率</p>
+        <p>4. <strong>包牌打贴规范</strong>：打一张贴一张，严禁批量打印张贴，打印机处张贴操作指引</p>
+        <p>5. <strong>分拣计划专人复核</strong>：专人专岗维护计划，变更后班组负责人必须复核</p>
+      </div>
+    </div>
+
+    <!-- 运力应上未上 -->
+    <div class="sol-card">
+      <h3><span class="tag tag-yellow">TOP 3</span> 运力应上未上-干支线 — 9,770票 (9.7%)</h3>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">定义：</strong>发运同班次运力，使用后一时间段运力预计上门时效后延。即"该用的车没用，用了后面的车导致超时"。</p>
+      <p style="color:var(--text-dim); font-size:0.88rem; margin-bottom:12px;"><strong style="color:var(--text);">根因分析：</strong></p>
+      <ul class="sol-list">
+        <li><strong>同班次提频线路设置不合理</strong>：未核对不同线路对应的预计上门时间，盲目提频</li>
+        <li><strong>规划路由与实际脱节</strong>：静态运力配置未根据实时货量动态调整</li>
+        <li><strong>装载率不足</strong>：部分线路长期低载但仍按原计划发车，浪费运力资源</li>
+      </ul>
+      <div class="highlight-box" style="margin-top:16px;">
+        <h3>可行方案</h3>
+        <p>1. <strong>按静态运力发出</strong>：根据规划下发的运力核查时效，时效跨段的沟通规划调整</p>
+        <p>2. <strong>低载线路优化</strong>：连续三日货量不足发运标准的线路，联动规划删除/修改或更换小车型</p>
+        <p>3. <strong>同班次谨慎设置提频</strong>：需核对下环节线路及最终上门时效后再决策</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: 八大类型标准操作 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9776;</span> 三、八大类型标准操作规范汇总</div>
+    <p style="color:var(--text-dim); margin-bottom:20px; font-size:0.9rem;">从方法论文件中提取的8大核心场景及标准操作，是日常操作的红线。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;">序号</th>
+            <th style="width:130px;">类型</th>
+            <th>场景</th>
+            <th>标准操作要求</th>
+          </tr>
+        </thead>
+        <tbody id="standardsTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 4: 安全定责类型 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9878;</span> 四、安全定责类型解析（23类）</div>
+    <p style="color:var(--text-dim); margin-bottom:20px; font-size:0.9rem;">安全类客诉涉及23种责任类型，涵盖外包装破损、违规操作、举证不规范等场景。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;">序号</th>
+            <th style="width:180px;">责任类型</th>
+            <th>定义说明</th>
+          </tr>
+        </thead>
+        <tbody id="safetyTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 5: 改善优先级矩阵 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#127919;</span> 五、改善优先级矩阵与实施路径</div>
+
+    <div class="highlight-box">
+      <h3>整体判断</h3>
+      <p>当前客诉结构中，<strong style="color:var(--text);">落货类(29.8%)</strong>和<strong style="color:var(--text);">错发类(14.1%+5.7%=19.8%)</strong>合计占比接近<strong style="color:var(--red);">50%</strong>，是改善的绝对重心。这两类问题本质上都是"清场不及时"和"装车不规范"导致的，可以通过流程优化和现场管理快速见效。</p>
+    </div>
+
+    <div class="sol-card">
+      <h3><span class="tag tag-red">P0 紧急</span> 立即见效的措施（1-2周内可落地）</h3>
+      <ul class="sol-list">
+        <li><strong>清场时间压缩5分钟</strong>：各卡位向前压缩5分钟清场，NC区多频次转运，班次结束前30分钟清场小组重点监控</li>
+        <li><strong>巴枪强制校验</strong>：装车逐票过巴枪，禁止强装，系统风险提示必须上报审核</li>
+        <li><strong>物理隔离到位</strong>：装车口流向标识+隔离网+雨膜，经停线路必须使用防损板隔离</li>
+        <li><strong>包牌打贴规范</strong>：打一张贴一张，严禁批量打印张贴</li>
+        <li><strong>中门抢货神器配置</strong>：每个场地标配1-2个，最后1小时到车抢货</li>
+      </ul>
+    </div>
+
+    <div class="sol-card">
+      <h3><span class="tag tag-orange">P1 重要</span> 短期改善（1个月内可落地）</h3>
+      <ul class="sol-list">
+        <li><strong>熟练工比例提升</strong>：建包、解包、供件、装车等关键岗位提高自有和熟练工占比</li>
+        <li><strong>分拣计划专人专岗</strong>：专人维护+班组负责人复核机制</li>
+        <li><strong>低载线路优化</strong>：梳理同城/省内/临省/省外发运标准，连续三日不足发运的线路联动规划调整</li>
+        <li><strong>设备维养改造</strong>：摆轮堵件/卡件/间隙过窄等问题拉通设备组整改</li>
+        <li><strong>地址不详前置补码</strong>：各城市兜底中转场24小时值班补码</li>
+      </ul>
+    </div>
+
+    <div class="sol-card">
+      <h3><span class="tag tag-yellow">P2 持续</span> 中长期建设（1-3个月）</h3>
+      <ul class="sol-list">
+        <li><strong>网规线路优化</strong>：基于集中到达/踩点到车数据，推动网规优化线路和发运时序</li>
+        <li><strong>大方车协同机制固化</strong>：小件包/快产品放车尾，反向结算0.2元/票机制落地</li>
+        <li><strong>员工培训体系</strong>：每日培训操作规范，现场分发违规操作说明书，师带徒机制</li>
+        <li><strong>高价值保障</strong>：与五易两冷结合，全环节交接/建包/建笼单独保障</li>
+        <li><strong>责任分摊机制完善</strong>：按五级十七损坏上报命中率、违规操作率、码货不规范率综合评定分档</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 6: 责任分摊说明 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9881;</span> 六、责任分摊机制说明</div>
+
+    <div class="sol-card">
+      <h3>分摊档位</h3>
+      <ul class="sol-list">
+        <li><strong>1档（低风险）</strong>：五级十七损坏上报命中率(40%) + 违规操作率(30%) + 码货不规范率(30%) 综合排名<strong style="color:var(--green);">非后15%</strong>，分摊系数=1</li>
+        <li><strong>2档（高风险）</strong>：同上综合排名<strong style="color:var(--red);">后15%</strong>，分摊系数=2（加倍承担）</li>
+        <li><strong>寄方分摊</strong>：无法锁定具体失误原因时，寄方网点固定分摊 0.5</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box">
+      <h3>计算示例</h3>
+      <p>一票快件经过 A(寄件网点)→B→C→D 四个环节，C场地评定为2档（系数2），其他为1档（系数1）。</p>
+      <p>总分摊系数 = 1(B) + 2(C) + 1(D) = 4</p>
+      <p>场地分摊比例 = 0.5 / 4 = 0.125</p>
+      <p><strong>最终：A寄方0.5 | B环节0.125 | C环节0.25 | D环节0.125</strong></p>
+    </div>
+  </div>
+
+  <!-- Section 7: 总结 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9989;</span> 七、总结与核心建议</div>
+
+    <div class="sol-card">
+      <h3>一句话总结</h3>
+      <p style="color:var(--text-dim); font-size:0.95rem; margin-top:8px;">
+        <strong style="color:var(--text);">"落货看清场，错发看规范，运力看规划。"</strong>
+      </p>
+      <p style="color:var(--text-dim); font-size:0.9rem; margin-top:12px;">
+        当前100,289票时效客诉中，<strong style="color:var(--red);">近30%来自跨班次落货</strong>，核心是清场不及时和处理能力饱和；<strong style="color:var(--orange);">约20%来自错发</strong>，核心是装车不规范和分拣计划错误。
+        抓住<strong style="color:var(--accent);">清场时间线</strong>、<strong style="color:var(--accent);">巴枪校验</strong>、<strong style="color:var(--accent);">物理隔离</strong>三个抓手，配合熟练工上岗和分拣计划复核，可以在短期内实现客诉量显著下降。
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>第一周：止血</h4>
+        <p>落实清场压缩5分钟、巴枪强制校验、物理隔离到位、包牌打贴规范</p>
+      </div>
+      <div class="timeline-item">
+        <h4>第二~四周：治标</h4>
+        <p>提升熟练工比例、分拣计划专人复核、低载线路优化、设备维养改造</p>
+      </div>
+      <div class="timeline-item">
+        <h4>第一~三月：治本</h4>
+        <p>网规线路优化、大方车协同固化、员工培训体系、高价值保障机制</p>
+      </div>
+      <div class="timeline-item">
+        <h4>持续：固化</h4>
+        <p>责任分摊机制运行、数据监控闭环、月度复盘改进</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>中转客诉异常分析总结与改善方案 | 基于两份数据源文件自动生成</p>
+    <p style="margin-top:6px;">数据源：客诉方法论 + 时效/安全明细表 | 生成时间：2026-07-11</p>
+  </div>
+
 </div>
 
-<div class="card">
-<h2>领慧助手 "公网映射" 功能</h2>
-<p>如果您希望外部也能访问，或者避免内网 IP 的证书问题：</p>
-<div class="step">操作：在领慧助手客户端中，检查生成看板的 Skill 是否支持 <strong>"生成公网分享链接"</strong>。<br>如果有，请使用生成的 <span class="highlight">https://ai.sf-express.com/...</span> 开头的链接，这种链接是公司统一认证的，不会出现不安全提示。</div>
-</div>
-</div>
+<script>
+// Bar chart data
+var barData = [
+  { label: '跨班次落货', value: 29909, pct: 29.8, color: '#f87171' },
+  { label: '错发-操作', value: 14157, pct: 14.1, color: '#fb923c' },
+  { label: '运力应上未上', value: 9770, pct: 9.7, color: '#fbbf24' },
+  { label: '未按配载发运-错发目的地', value: 5680, pct: 5.7, color: '#fbbf24' },
+  { label: '运力晚发', value: 4508, pct: 4.5, color: '#fcd34d' },
+  { label: '晚出仓/晚交接', value: 4031, pct: 4.0, color: '#fcd34d' },
+  { label: '风险挽救', value: 2955, pct: 2.9, color: '#86efac' },
+  { label: '未按配载发运-错发产品', value: 2921, pct: 2.9, color: '#86efac' },
+  { label: '执行与规划不一致', value: 2413, pct: 2.4, color: '#86efac' },
+  { label: '仓库异常滞留', value: 2114, pct: 2.1, color: '#4ade80' },
+  { label: '错发现场临时变更', value: 1632, pct: 1.6, color: '#4ade80' },
+  { label: '无路由-无静态', value: 1577, pct: 1.6, color: '#4ade80' },
+  { label: '跨班次囤货-中转', value: 1442, pct: 1.4, color: '#22d3ee' },
+  { label: '临时调整-配载/产品', value: 1420, pct: 1.4, color: '#22d3ee' },
+  { label: '有装无发', value: 1348, pct: 1.3, color: '#22d3ee' },
+  { label: '跨班次晚到', value: 1299, pct: 1.3, color: '#22d3ee' }
+];
+
+var chartEl = document.getElementById('barChart');
+var maxVal = barData[0].value;
+barData.forEach(function(item) {
+  var row = document.createElement('div');
+  row.className = 'bar-row';
+  var pct = (item.value / maxVal * 100).toFixed(1);
+  row.innerHTML = '<div class="bar-label">' + item.label + '</div>' +
+    '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%; background:' + item.color + ';">' + item.pct + '%</div></div>';
+  chartEl.appendChild(row);
+});
+
+// Standards table
+var standardsData = [
+  { no: 1, type: '错装车', scene: '扫对线路错装车、强装错发、漏巴错装', std: '装车口张贴流向标识；划分囤货区域用隔离网区隔；逐票过巴枪提高扫描准确率；利用巴枪校验功能，强装风险上报组长审核；地址不详交医院区补码后再发运' },
+  { no: 2, type: '错建包', scene: '建包计划错误、错投格口', std: '定期核查按全网标准维护建包计划；自有或熟练工操作解建包；分拣柜格口贴流向标签+颜色贴纸，封包按钮加挡板；装件入包/装包入笼二次核对包牌目的地流向' },
+  { no: 3, type: '错贴包牌', scene: '包牌粘贴错误', std: '自有或熟练工进行建包作业；打印机处张贴操作指引，灯亮及时收包；打一张贴一张，严禁批量打印张贴' },
+  { no: 4, type: '错扫线路编码', scene: '错扫装车线路', std: '自有或熟练工进行建包作业；装车时核查发运线路并与司机任务/交接码确认；事中通过PASS中转错装异常监控核验并挽救；管理人员加强巡查抽查' },
+  { no: 5, type: '笼号关联错误', scene: '笼号装车关联错误', std: '自有熟练工上岗装笼前核对线路编码/卡位一致性；封车前做笼号隔断，顺转后台核查笼关联信息；管理人员加强巡查抽查' },
+  { no: 6, type: '分拣计划维护错误', scene: '未及时调整、错误维护分拣计划', std: '专人专岗具备专业技能；及时关注后台推送网点变更/调整信息作出调整；分拣计划维护后班组负责人复核' },
+  { no: 7, type: '经停错装/错卸/漏卸', scene: '经停线路不规范隔离/装卸', std: '经停线路按目的地码放车头/经停点码放车尾标准执行；经停点间使用防损板隔离；经停点卸车结合顺转APP卸车比对功能校验件数；始发方未按要求隔离则上报并逐票卸车' },
+  { no: 8, type: '设备飘件', scene: '供件不规范', std: '供件人员培训上岗，提高自有和熟练工占比；异型件/磁铁件/轻飘件/超尺寸快件严禁上线，严禁堆叠并排；供件快件与V型槽对齐，面单朝上，把握导件节奏' }
+];
+
+var stdBody = document.getElementById('standardsTable');
+standardsData.forEach(function(item) {
+  var tr = document.createElement('tr');
+  var tagClass = item.no <= 3 ? 'tag-red' : (item.no <= 5 ? 'tag-orange' : 'tag-blue');
+  tr.innerHTML = '<td>' + item.no + '</td>' +
+    '<td><span class="tag ' + tagClass + '">' + item.type + '</span></td>' +
+    '<td>' + item.scene + '</td>' +
+    '<td>' + item.std + '</td>';
+  stdBody.appendChild(tr);
+});
+
+// Safety table
+var safetyData = [
+  { no: 1, type: '101 责任分摊1档-风险低', def: '五级十七损坏上报命中率(40%)+违规操作率(30%)+码货不规范率(30%)综合排名非后15%，分摊系数=1' },
+  { no: 2, type: '15 外包装破损/托寄物损坏', def: '到件托寄物损坏、外包装破损，责任按环节划分至操作失误组织' },
+  { no: 3, type: '16 违规抛扔', def: '场地存在违规抛扔操作行为，将违规前15分钟内在库经手损坏快件关联违规抛扔责任' },
+  { no: 4, type: '14 时效延误', def: '运输时效超承诺时效，责任方取PIS新过程定责(多责)报表责任方' },
+  { no: 5, type: '23 未按SOP操作', def: '人工核查结果为"其它有责情况"，如航空大件未规范拆托/复托等' },
+  { no: 6, type: '102 责任分摊2档-风险高', def: '同上综合排名后15%，分摊系数=2（加倍承担）' },
+  { no: 7, type: '45 违规上矩阵', def: 'NC件/酒类/已打印二联单快件未剥离操作直接上矩阵，定责违规上线方' },
+  { no: 8, type: '43 码货不规范', def: '场地存在码货不规范场景，将违规前15分钟内在库经手损坏快件关联码货不规范责任' },
+  { no: 9, type: '56 外包装湿损/托寄物损坏', def: '到件托寄物损坏、外包装湿损，责任按环节划分至操作失误组织' },
+  { no: 10, type: '35 环节共担', def: '大件重点客户经人工核查后未锁定具体责任环节时，损坏问题分解至除寄方外所经大件场地共担' },
+  { no: 11, type: '44 举证不规范', def: '核查结果为举证照片/视频不清晰、证据与快件信息不符、举证信息无法体现环节操作、未举证' },
+  { no: 12, type: '41 单人搬运大家电/家具/重货', def: '50KG以上需2人以上操作，轻拿轻放脱手不超10CM，责任分解至操作不规范方' },
+  { no: 13, type: '78 违规上线', def: '文件封/非循环编织袋<3KG/棍状包裹/颗粒类包裹违规上输送线导致夹件损坏' },
+  { no: 14, type: '22 上报不规范', def: '承运环节未按上报要求上报，影响损坏责任判断，责任划分至上报方' },
+  { no: 15, type: '79 未规范集装', def: '高价值快件应做集装未做，责任划分至违规操作地区' },
+  { no: 16, type: '67 区内件损坏', def: '无法锁定具体失误原因且所经环节均属于同一区部，损坏问题分解至寄件方' },
+  { no: 17, type: '103 责任分摊-寄方分摊', def: '无法锁定具体失误原因时，寄方网点固定分摊0.5' },
+  { no: 18, type: '24 异常事件-交通事故', def: '重大异常事故导致物品损坏，我司原因归属车管区，非我司原因归属陆运资源管理处' },
+  { no: 19, type: '40 翻转/踩踏快件', def: '大家电/家具未按箭头竖立摆放或操作者踩站快件上装卸，责任划分至违规操作地区' },
+  { no: 20, type: '57 外包装变形/托寄物损坏', def: '到件托寄物损坏、外包装变形，责任按环节划分至操作失误组织' },
+  { no: 21, type: '17 异常多件', def: '核实为异常多件场景，责任根据托寄物类型、找回及上报情况划分实际操作失误组织' },
+  { no: 22, type: '19 包装与寄出时不符', def: '外包装被更换或异常加固/运单切割等，责任划分至异常环节，无法明确则由所经环节共担' },
+  { no: 23, type: '46 品名填写/标识不规范', def: '到件托寄物损坏，寄出运单填写与实际不符影响后续操作，责任划分至违规操作地区' }
+];
+
+var safeBody = document.getElementById('safetyTable');
+safetyData.forEach(function(item) {
+  var tr = document.createElement('tr');
+  var tagClass = item.no <= 2 ? 'tag-red' : (item.no <= 6 ? 'tag-orange' : (item.no <= 12 ? 'tag-yellow' : 'tag-blue'));
+  tr.innerHTML = '<td>' + item.no + '</td>' +
+    '<td><span class="tag ' + tagClass + '">' + item.type + '</span></td>' +
+    '<td>' + item.def + '</td>';
+  safeBody.appendChild(tr);
+});
+</script>
 </body>
 </html>
