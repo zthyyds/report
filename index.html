@@ -275,9 +275,9 @@ function renderMap(){
       {
         name:'台风', type:'effectScatter', coordinateSystem:'geo', data:[typhoonData],
         symbol:'path://M0,-18 C8,-18 14,-12 14,-4 C14,4 8,10 0,10 C-8,10 -14,4 -14,-4 C-14,-12 -8,-18 0,-18 Z M0,-12 C5,-12 8,-8 8,-4 C8,0 5,4 0,4 C-5,4 -8,0 -8,-4 C-8,-8 -5,-12 0,-12 Z M0,-6 C2,-6 3,-4 3,-2 C3,0 2,2 0,2 C-2,2 -3,0 -3,-2 C-3,-4 -2,-6 0,-6 Z',
-        symbolSize:48, showEffectOn:'render',
-        rippleEffect:{brushType:'fill',scale:6,number:4,period:2},
-        itemStyle:{color:'rgba(239,68,68,0.85)',borderColor:'#ef4444',borderWidth:2,shadowColor:'rgba(239,68,68,0.9)',shadowBlur:30},
+        symbolSize:24, showEffectOn:'render',
+        rippleEffect:{brushType:'stroke',scale:2.5,number:3,period:2.5},
+        itemStyle:{color:'#ef4444',borderColor:'#ef4444',borderWidth:1.5,shadowColor:'rgba(239,68,68,0.5)',shadowBlur:8},
         label:{show:true,formatter:'台风 {b}',position:'top',offset:[0,-20],color:'#fca5a5',fontSize:13,fontWeight:'bold',fontFamily:'Microsoft YaHei',backgroundColor:'rgba(100,20,20,0.85)',padding:[4,10],borderRadius:6,border:'1px solid rgba(239,68,68,0.4)'}
       },
       {
