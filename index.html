@@ -8,13 +8,13 @@
 <script src="https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: "Microsoft YaHei","PingFang SC","SimHei","SimSun",sans-serif; background: linear-gradient(135deg,#1a2332 0%,#1e293b 40%,#1a2332 100%); color: #cbd5e1; overflow: hidden; }
+  body { font-family: "Microsoft YaHei","PingFang SC","SimHei","SimSun",sans-serif; background: linear-gradient(135deg,#1a2332 0%,#1e293b 40%,#1a2332 100%); color: #cbd5e1; overflow: hidden; min-height: 100vh; }
   .header { height: 100px; background: linear-gradient(180deg,#1e293b,#1a2332); border-bottom: 1px solid rgba(100,116,139,0.2); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
   .header h1 { font-size: 48px; font-weight: 900; color: #93c5fd; letter-spacing: 8px; }
   .header h1 span { color: #fca5a5; font-size: 28px; padding: 6px 24px; border-radius: 10px; background: rgba(248,113,113,0.15); margin-left: 24px; vertical-align: middle; font-weight: 900; border: 2px solid rgba(248,113,113,0.3); }
   .header .time { position: absolute; right: 28px; color: #64748b; font-size: 36px; font-weight: 700; }
-  .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; height: calc(100vh - 100px); }
-  .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: space-between; gap: 0; overflow: hidden; height: 100%; }
+  .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; min-height: calc(100vh - 100px); }
+  .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; overflow: visible; height: 100%; }
   .panel-title { font-size: 30px; font-weight: 900; color: #93c5fd; display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-bottom: 10px; margin-bottom: 8px; }
   .panel-title::before { content: ''; width: 6px; height: 30px; background: linear-gradient(180deg,#3b82f6,#60a5fa); border-radius: 2px; }
   .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-shrink: 0; }
