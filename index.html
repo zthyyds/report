@@ -14,14 +14,14 @@
   .header h1 span { color: #fca5a5; font-size: 28px; padding: 6px 24px; border-radius: 10px; background: rgba(248,113,113,0.15); margin-left: 24px; vertical-align: middle; font-weight: 900; border: 2px solid rgba(248,113,113,0.3); }
   .header .time { position: absolute; right: 28px; color: #64748b; font-size: 36px; font-weight: 700; }
   .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; height: calc(100vh - 100px); }
-  .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: space-between; gap: 0; overflow: hidden; height: 100%; }
+  .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; overflow: hidden; height: 100%; }
   .panel-title { font-size: 30px; font-weight: 900; color: #93c5fd; display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-bottom: 10px; margin-bottom: 8px; }
   .panel-title::before { content: ''; width: 6px; height: 30px; background: linear-gradient(180deg,#3b82f6,#60a5fa); border-radius: 2px; }
-  .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-shrink: 0; }
-  .stat-card { background: rgba(51,65,85,0.6); border: 1px solid rgba(100,116,139,0.15); border-radius: 14px; padding: 44px 24px; text-align: center; }
+  .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex-shrink: 0; }
+  .stat-card { background: rgba(51,65,85,0.6); border: 1px solid rgba(100,116,139,0.15); border-radius: 14px; padding: 52px 28px; text-align: center; }
   .stat-card .num { font-size: 68px; font-weight: 900; line-height: 1; }
   .stat-card .label { font-size: 22px; color: #94a3b8; margin-top: 8px; font-weight: 700; }
-  .alert-item { padding: 22px 26px; border-radius: 12px; display: flex; gap: 14px; align-items: flex-start; }
+  .alert-item { padding: 26px 26px; border-radius: 12px; display: flex; gap: 14px; align-items: flex-start; }
   .alert-red { background: rgba(248,113,113,0.08); border-left: 3px solid #ef4444; }
   .alert-orange { background: rgba(251,146,60,0.08); border-left: 3px solid #f97316; }
   .alert-yellow { background: rgba(250,204,21,0.06); border-left: 3px solid #eab308; }
@@ -30,8 +30,8 @@
   .alert-orange .tag { background: rgba(251,146,60,0.2); color: #fdba74; }
   .alert-yellow .tag { background: rgba(250,204,21,0.15); color: #fde047; }
   .alert-item .text { font-size: 22px; color: #cbd5e1; line-height: 1.75; font-weight: 500; }
-  .city-list { display: flex; flex-direction: column; gap: 12px; flex: 1; min-height: 0; }
-  .city-item { display: flex; align-items: center; padding: 22px 24px; border-radius: 6px; background: rgba(51,65,85,0.4); }
+  .city-list { display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; }
+  .city-item { display: flex; align-items: center; padding: 28px 24px; border-radius: 6px; background: rgba(51,65,85,0.4); }
   .city-item .dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 14px; flex-shrink: 0; }
   .city-item .name { font-size: 26px; font-weight: 700; min-width: 56px; color: #e2e8f0; }
   .city-item .code { font-size: 18px; color: #64748b; min-width: 44px; font-weight: 500; }
@@ -46,9 +46,9 @@
   .typhoon-box { background: rgba(234,179,8,0.06); border: 1px solid rgba(234,179,8,0.2); border-radius: 12px; padding: 30px; flex-shrink: 0; }
   .typhoon-box .title { font-size: 30px; font-weight: 900; color: #eab308; margin-bottom: 12px; }
   .typhoon-box .info { font-size: 22px; color: #cbd5e1; line-height: 2.0; font-weight: 500; }
-  .right-stats { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+  .right-stats { display: flex; flex-direction: column; gap: 28px; flex: 1; }
   .bar-item .label { font-size: 22px; color: #94a3b8; display: flex; justify-content: space-between; font-weight: 700; }
-  .bar-item .bar { height: 20px; background: rgba(100,116,139,0.2); border-radius: 10px; overflow: hidden; margin-top: 8px; }
+  .bar-item .bar { height: 28px; background: rgba(100,116,139,0.2); border-radius: 10px; overflow: hidden; margin-top: 8px; }
   .bar-item .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
   .panel-footer { font-size: 16px; color: #475569; text-align: center; flex-shrink: 0; padding-top: 14px; margin-top: 14px; border-top: 1px solid rgba(100,116,139,0.15); letter-spacing: 3px; font-weight: 600; }
 @media(max-width:900px){body{overflow-y:auto!important}.header{height:44px;padding:0 10px}.header h1{font-size:15px;letter-spacing:0}.header h1 span{font-size:10px;padding:2px 6px;margin-left:4px;border-width:1px}.header .time{display:none}.dashboard{grid-template-columns:1fr;gap:8px;padding:8px;height:auto!important}.panel{padding:10px 12px;border-radius:10px;height:auto!important}.panel-title{font-size:16px;padding-bottom:4px;margin-bottom:2px}.panel-title::before{width:3px;height:14px}.stat-cards{gap:6px;grid-template-columns:1fr 1fr}.stat-card{padding:12px 8px;border-radius:8px}.stat-card .num{font-size:28px}.stat-card .label{font-size:11px;margin-top:2px}.alert-item{padding:8px 10px;gap:6px;margin-bottom:6px}.alert-item .tag{font-size:12px;padding:2px 6px}.alert-item .text{font-size:12px;line-height:1.5}.city-list{gap:4px}.city-item{padding:8px 10px}.city-item .dot{width:7px;height:7px;margin-right:6px}.city-item .name{font-size:14px;min-width:36px}.city-item .code{font-size:10px;min-width:28px}.city-item .rain{font-size:14px}.city-item .level{font-size:10px;padding:1px 6px;margin-left:4px}.map-section{height:280px;min-height:280px}.map-overlay{top:6px;left:6px;padding:6px 10px}.map-overlay h3{font-size:13px;margin-bottom:3px}.map-overlay .stat{font-size:11px;margin:1px 0}.typhoon-box{padding:12px;margin-top:6px}.typhoon-box .title{font-size:18px;margin-bottom:4px}.typhoon-box .info{font-size:14px;line-height:1.6}.right-stats{gap:8px}.bar-item .label{font-size:14px}.bar-item .bar{height:10px;margin-top:4px}.panel-footer{font-size:11px;padding-top:6px;margin-top:6px}}
