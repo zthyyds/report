@@ -127,15 +127,6 @@ function buildRightPanel(){
     h += '</div>';
   });
   h += '</div>';
-  h += '<div class="panel-title" style="margin-top:14px">风力等级</div>';
-  h += '<div class="right-stats">';
-  cityData.forEach(function(c){
-    h += '<div class="bar-item">';
-    h += '<div class="label"><span>'+c.name+'</span><span>'+c.wind+'</span></div>';
-    h += '<div class="bar"><div class="bar-fill" style="width:50%;background:#3b82f6"></div></div>';
-    h += '</div>';
-  });
-  h += '</div>';
   h += '<div class="panel-footer">台风实时追踪系统 v2.0</div>';
   document.getElementById('rightPanel').innerHTML = h;
 }
