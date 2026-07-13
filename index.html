@@ -68,8 +68,8 @@
   <div class="panel" id="rightPanel"></div>
 </div>
 <script>
-var cityData = [{"name":"南京","value":[118.8,32.06,3],"code":"025","rain":"暴雨","mm":"50~80","wind":"东北风7~8级","temp":"31/25","level":"红色"},{"name":"沈阳","value":[123.43,41.81,3],"code":"024","rain":"暴雨转大暴雨","mm":"50~100","wind":"南风5~6级","temp":"32/24","level":"红色"},{"name":"上海","value":[121.47,31.23,2],"code":"021","rain":"大雨转中雨","mm":"25~50","wind":"东南风5~6级","temp":"31/27","level":"橙色"},{"name":"合肥","value":[117.27,31.86,2],"code":"551","rain":"大雨转中雨","mm":"25~50","wind":"西南风5~6级","temp":"29/26","level":"橙色"},{"name":"福州","value":[119.3,26.08,1],"code":"591","rain":"浓雾","mm":"0~5","wind":"微风","temp":"34/27","level":"黄色"},{"name":"杭州","value":[120.19,30.26,0],"code":"571","rain":"暂无预警","mm":"--","wind":"--","temp":"--","level":"无预警"},{"name":"温州","value":[120.7,27.99,0],"code":"577","rain":"暂无预警","mm":"--","wind":"--","temp":"--","level":"无预警"}];
-var levelMap = {'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308','无预警':'#94a3b8'};
+var cityData = [{"name":"南京","value":[118.8,32.06,3],"code":"025","rain":"暴雨","mm":"50~80","wind":"东北风7~8级","temp":"31/25","level":"红色"},{"name":"沈阳","value":[123.43,41.81,3],"code":"024","rain":"暴雨转大暴雨","mm":"50~100","wind":"南风5~6级","temp":"32/24","level":"红色"},{"name":"上海","value":[121.47,31.23,2],"code":"021","rain":"大雨转中雨","mm":"25~50","wind":"东南风5~6级","temp":"31/27","level":"橙色"},{"name":"合肥","value":[117.27,31.86,2],"code":"551","rain":"大雨转中雨","mm":"25~50","wind":"西南风5~6级","temp":"29/26","level":"橙色"},{"name":"福州","value":[119.3,26.08,1],"code":"591","rain":"浓雾","mm":"0~5","wind":"微风","temp":"34/27","level":"黄色"}];
+var levelMap = {'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308'};
 var typhoonData = {name:'巴威',value:[117.2,31.8],level:'台风级(13级)',wind:'38m/s',pressure:'960hPa',status:'已登陆'};
 
 function updateTime(){
@@ -85,12 +85,12 @@ function buildLeftPanel(){
   h += '<div class="stat-card"><div class="num" style="color:#ef4444">2</div><div class="label">红色预警</div></div>';
   h += '<div class="stat-card"><div class="num" style="color:#f97316">2</div><div class="label">橙色预警</div></div>';
   h += '<div class="stat-card"><div class="num" style="color:#eab308">1</div><div class="label">黄色预警</div></div>';
-  h += '<div class="stat-card"><div class="num" style="color:#60a5fa">7</div><div class="label">影响城市</div></div>';
+  h += '<div class="stat-card"><div class="num" style="color:#60a5fa">5</div><div class="label">影响城市</div></div>';
   h += '</div>';
   h += '<div class="panel-title" style="margin-top:12px">预警信息</div>';
   h += '<div class="alert-item alert-red"><span class="tag">红色</span><span class="text"><b>台风巴威</b> 13级/38m/s，960hPa。偏北移入安徽。南京21-03时暴雨红色预警，沈阳14-08时暴雨红色预警。</span></div>';
   h += '<div class="alert-item alert-orange"><span class="tag">橙色</span><span class="text">上海17-19时大雨橙色预警。合肥17-18时中雨，14日10-12时大雨橙色预警。</span></div>';
-  h += '<div class="alert-item alert-yellow"><span class="tag">黄色</span><span class="text">福州21-22时浓雾橙色预警，14日14-15时中雨黄色预警。杭州、温州暂无预警数据。</span></div>';
+  h += '<div class="alert-item alert-yellow"><span class="tag">黄色</span><span class="text">福州21-22时浓雾橙色预警，14日14-15时中雨黄色预警。</span></div>';
     h += '<div class="panel-title" style="margin-top:12px">城市降雨量</div>';
   h += '<div class="city-list">';
   cityData.forEach(function(c){
