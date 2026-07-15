@@ -56,7 +56,7 @@
 </head>
 <body>
 <div class="header">
-  <h1>降雨预警 <span>台风巴威红色预警</span></h1>
+  <h1>降雨预警</h1>
   <span class="time" id="headerTime"></span>
 </div>
 <div class="dashboard">
@@ -70,7 +70,6 @@
 <script>
 var cityData = [{"name":"广州","value":[113.26,23.13,3],"code":"020","rain":"暴雨","mm":"50~80","wind":"东南风4~5级","temp":"35/27","level":"红色"},{"name":"深圳","value":[114.07,22.62,3],"code":"755","rain":"暴雨","mm":"50~100","wind":"东南风5~6级","temp":"33/26","level":"红色"},{"name":"青岛","value":[120.38,36.07,3],"code":"532","rain":"暴雨","mm":"50~80","wind":"南风5~6级","temp":"30/24","level":"红色"},{"name":"重庆","value":[106.55,29.57,3],"code":"023","rain":"暴雨","mm":"50~80","wind":"东北风3~4级","temp":"34/26","level":"红色"},{"name":"昆明","value":[102.83,24.88,3],"code":"871","rain":"暴雨","mm":"50~80","wind":"西南风3~4级","temp":"26/18","level":"红色"},{"name":"厦门","value":[118.08,24.48,2],"code":"592","rain":"大雨","mm":"25~50","wind":"东风4~5级","temp":"32/26","level":"橙色"},{"name":"郑州","value":[113.65,34.76,2],"code":"371","rain":"大雨","mm":"25~50","wind":"东北风3~4级","temp":"31/23","level":"橙色"},{"name":"兰州","value":[103.73,36.03,2],"code":"931","rain":"大雨","mm":"25~50","wind":"北风4~5级","temp":"28/18","level":"橙色"},{"name":"成都","value":[104.07,30.67,1],"code":"028","rain":"中雨","mm":"10~25","wind":"微风","temp":"30/22","level":"黄色"},{"name":"贵阳","value":[106.71,26.57,1],"code":"851","rain":"中雨","mm":"10~25","wind":"南风2~3级","temp":"27/20","level":"黄色"},{"name":"西宁","value":[101.74,36.56,1],"code":"971","rain":"中雨","mm":"10~25","wind":"东风3~4级","temp":"22/12","level":"黄色"}];
 var levelMap = {'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308'};
-var typhoonData = {name:'巴威',value:[117.2,31.8],level:'台风级(13级)',wind:'38m/s',pressure:'960hPa',status:'已登陆'};
 
 function updateTime(){
   var now = new Date();
@@ -108,13 +107,7 @@ function buildLeftPanel(){
 }
 
 function buildRightPanel(){
-  var h = '<div class="panel-title">台风信息</div>';
-  h += '<div class="typhoon-box">';
-  h += '<div class="title">台风 巴威</div>';
-  h += '<div class="info">';
-  h += '等级：台风级(13级)<br>风速：38m/s<br>气压：960hPa<br>位置：安徽内陆(117.2E,31.8N)<br>移向：偏北移动<br>影响：华东及东北南部';
-  h += '</div></div>';
-  h += '<div class="panel-title" style="margin-top:12px">降雨量分布</div>';
+  var h = '<div class="panel-title">降雨量分布</div>';
   h += '<div class="right-stats">';
   var sorted = cityData.slice().sort(function(a,b){ return parseInt(b.mm) - parseInt(a.mm); });
   var maxMm = parseInt(sorted[0].mm) || 100;
@@ -127,7 +120,7 @@ function buildRightPanel(){
     h += '</div>';
   });
   h += '</div>';
-  h += '<div class="panel-footer">台风实时追踪系统 v2.0</div>';
+  h += '<div class="panel-footer">全国降雨预警监测系统</div>';
   document.getElementById('rightPanel').innerHTML = h;
 }
 
@@ -157,10 +150,6 @@ function renderMap(){
             +'<div>天气：<b>'+d.rain+'</b></div>'
             +'<div>降雨：<span style="color:'+levelMap[d.level]+'">'+d.mm+'mm</span></div>'
             +'<div>风力：'+d.wind+'</div><div>气温：'+d.temp+'</div><div>区号：'+d.code+'</div></div>';
-        }
-        if(p.seriesName==='台风'){
-          return '<div style="padding:4px"><div style="font-size:15px;font-weight:700;color:#ef4444;margin-bottom:4px">台风 '+p.data.name+'</div>'
-            +'<div>等级：'+p.data.level+'</div><div>风速：'+p.data.wind+'</div><div>气压：'+p.data.pressure+'</div></div>';
         }
         return '';
       }
@@ -192,15 +181,6 @@ function renderMap(){
         data: cityData.map(function(c){
           return {name:c.name,value:c.value,cityData:c};
         })
-      },
-      {
-        name:'台风', type:'effectScatter', coordinateSystem:'geo', zlevel:3,
-        rippleEffect:{brushType:'fill',scale:10,period:2},
-        symbolSize:36,
-        showEffectOn:'render',
-        itemStyle:{color:'rgba(234,179,8,0.5)',shadowBlur:16,shadowColor:'rgba(234,179,8,0.3)'},
-        label:{show:true,position:'bottom',formatter:function(p){return '台风 '+p.data.name;},fontSize:22,color:'rgba(234,179,8,0.7)',distance:24,fontWeight:'bold'},
-        data:[{name:typhoonData.name,value:typhoonData.value,level:typhoonData.level,wind:typhoonData.wind,pressure:typhoonData.pressure}]
       }
     ]
   });
