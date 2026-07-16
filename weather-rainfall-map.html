@@ -171,7 +171,7 @@ function loadGeoJSON(url){
 }
 function renderMap(){
   var el=document.getElementById('map');
-  var chart=echarts.init(el,null,{renderer:'canvas'});
+  var chart=echarts.init(el,null,{renderer:'svg'});
   loadGeoJSON(chinaGeoUrl).catch(function(){
     return loadGeoJSON(chinaGeoUrlFallback);
   }).then(function(geo){
