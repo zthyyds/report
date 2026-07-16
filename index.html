@@ -13,7 +13,9 @@
   .header h1 { font-size: 48px; font-weight: 900; color: #93c5fd; letter-spacing: 8px; }
   .header h1 span { color: #fca5a5; font-size: 28px; padding: 6px 24px; border-radius: 10px; background: rgba(248,113,113,0.15); margin-left: 24px; vertical-align: middle; font-weight: 900; border: 2px solid rgba(248,113,113,0.3); }
   .header .time { position: absolute; right: 28px; color: #64748b; font-size: 36px; font-weight: 700; }
-  .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; height: calc(100vh - 100px); }
+  .dashboard { display: grid; grid-template-rows: 500px 1fr; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; height: calc(100vh - 100px); }
+  .map-section { grid-column: 1 / -1; }
+  .bottom-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; overflow: hidden; height: 100%; }
   .panel-title { font-size: 30px; font-weight: 900; color: #93c5fd; display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-bottom: 10px; margin-bottom: 8px; }
   .panel-title::before { content: ''; width: 6px; height: 30px; background: linear-gradient(180deg,#3b82f6,#60a5fa); border-radius: 2px; }
@@ -60,12 +62,14 @@
   <span class="time" id="headerTime"></span>
 </div>
 <div class="dashboard">
-  <div class="panel" id="leftPanel"></div>
   <div class="map-section">
     <div id="map"></div>
     <div class="map-overlay" id="mapOverlay"></div>
   </div>
-  <div class="panel" id="rightPanel"></div>
+  <div class="bottom-row">
+    <div class="panel" id="leftPanel"></div>
+    <div class="panel" id="rightPanel"></div>
+  </div>
 </div>
 <script>
 var cityData = [{"name":"郑州","value":[113.65,34.76,3],"code":"371","rain":"暴雨","mm":"今35 明26","wind":"微风","temp":"--","level":"红色"},{"name":"深圳","value":[114.07,22.62,3],"code":"755","rain":"暴雨","mm":"今21 明31","wind":"微风","temp":"--","level":"红色"},{"name":"西安","value":[108.94,34.26,2],"code":"029","rain":"大雨","mm":"今20 明27","wind":"微风","temp":"--","level":"橙色"},{"name":"青岛","value":[120.38,36.07,2],"code":"532","rain":"大雨","mm":"今22 明14","wind":"微风","temp":"--","level":"橙色"},{"name":"昆明","value":[102.83,24.88,2],"code":"871","rain":"大雨","mm":"今14 明17","wind":"微风","temp":"--","level":"橙色"},{"name":"南宁","value":[108.37,22.82,2],"code":"771","rain":"大雨","mm":"今6 明21","wind":"微风","temp":"--","level":"橙色"},{"name":"海口","value":[110.2,20.05,1],"code":"898","rain":"中雨","mm":"今19 明2","wind":"微风","temp":"--","level":"黄色"},{"name":"重庆","value":[106.55,29.57,1],"code":"023","rain":"中雨","mm":"今2 明19","wind":"微风","temp":"--","level":"黄色"},{"name":"济南","value":[117,36.65,1],"code":"531","rain":"中雨","mm":"今0 明16","wind":"微风","temp":"--","level":"黄色"},{"name":"广州","value":[113.26,23.13,1],"code":"020","rain":"中雨","mm":"今10 明6","wind":"微风","temp":"--","level":"黄色"},{"name":"太原","value":[112.55,37.87,1],"code":"351","rain":"中雨","mm":"今9 明4","wind":"微风","temp":"--","level":"黄色"},{"name":"贵阳","value":[106.71,26.57,1],"code":"851","rain":"中雨","mm":"今2 明10","wind":"微风","temp":"--","level":"黄色"},{"name":"西宁","value":[101.74,36.56,1],"code":"971","rain":"中雨","mm":"今8 明3","wind":"微风","temp":"--","level":"黄色"}];
