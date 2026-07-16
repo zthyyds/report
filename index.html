@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>降雨预警</title>
+<title>未来24小时的降雨模型预警</title>
 <!-- Google Fonts removed, using system fonts -->
 <script src="https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.js"></script>
 <style>
@@ -56,7 +56,7 @@
 </head>
 <body>
 <div class="header">
-  <h1>降雨预警</h1>
+  <h1>未来24小时的降雨模型预警</h1>
   <span class="time" id="headerTime"></span>
 </div>
 <div class="dashboard">
@@ -79,7 +79,7 @@ function updateTime(){
 }
 
 function buildLeftPanel(){
-  var h = '<div class="panel-title">降雨预警统计</div>';
+  var h = '<div class="panel-title">未来24小时的降雨模型预警统计</div>';
   h += '<div class="stat-cards">';
   h += '<div class="stat-card"><div class="num" style="color:#ef4444">1</div><div class="label">红色预警</div></div>';
   h += '<div class="stat-card"><div class="num" style="color:#f97316">0</div><div class="label">橙色预警</div></div>';
@@ -119,7 +119,7 @@ function buildRightPanel(){
     h += '</div>';
   });
   h += '</div>';
-  h += '<div class="panel-footer">全国降雨预警监测系统</div>';
+  h += '<div class="panel-footer">全国降雨模型预测系统</div>';
   document.getElementById('rightPanel').innerHTML = h;
 }
 
