@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来24小时的降雨模型预警</title>
+<script src="https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system,"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; background: linear-gradient(160deg,#0a1628 0%,#0d1f3c 40%,#0a1628 100%); color: #e0e7ef; }
+  .header { height: 56px; background: linear-gradient(90deg,#0a0f1e 0%,#111827 50%,#0a0f1e 100%); border-bottom: 1px solid rgba(100,116,139,0.15); display: flex; align-items: center; justify-content: center; padding: 0 32px; flex-shrink: 0; position: relative; }
+  .header h1 { font-size: 18px; font-weight: 800; color: #f1f5f9; letter-spacing: 2px; }
+  .header .time { color: #64748b; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; position: absolute; right: 32px; }
+  .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; height: calc(100vh - 56px); }
+  .map-section { grid-column: 1 / -1; grid-row: 1; position: relative; background: #0d1321; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; overflow: hidden; height: 350px; }
+  #map { width: 100%; height: 100%; }
+  .map-overlay { position: absolute; top: 12px; left: 12px; z-index: 10; background: rgba(17,24,39,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(100,116,139,0.15); border-radius: 10px; padding: 12px 16px; }
+  .map-overlay h3 { font-size: 12px; color: #94a3b8; margin-bottom: 6px; font-weight: 700; letter-spacing: 1px; }
+  .map-overlay .stat { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 12px; color: #cbd5e1; font-weight: 500; }
+  .map-overlay .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .left-panel { grid-column: 1; grid-row: 2; background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
+  .right-panel { grid-column: 3; grid-row: 2; background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
+  .panel-title { font-size: 14px; font-weight: 700; color: #93c5fd; display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid rgba(100,116,139,0.1); letter-spacing: 0.5px; }
+  .panel-title .icon { width: 3px; height: 14px; border-radius: 2px; background: #3b82f6; flex-shrink: 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; flex-shrink: 0; margin-bottom: 12px; }
+  .stat-box { background: rgba(30,41,59,0.8); border: 1px solid rgba(100,116,139,0.1); border-radius: 10px; padding: 10px 8px; text-align: center; position: relative; overflow: hidden; }
+  .stat-box::after { content:''; position:absolute; top:0; left:0; right:0; height: 2px; }
+  .stat-box.red::after { background: #ef4444; } .stat-box.orange::after { background: #f97316; }
+  .stat-box.yellow::after { background: #eab308; } .stat-box.blue::after { background: #3b82f6; }
+  .stat-box .num { font-size: 28px; font-weight: 800; line-height: 1.1; }
+  .stat-box.red .num { color: #fca5a5; } .stat-box.orange .num { color: #fdba74; }
+  .stat-box.yellow .num { color: #fde047; } .stat-box.blue .num { color: #93c5fd; }
+  .stat-box .label { font-size: 11px; color: #64748b; margin-top: 3px; font-weight: 600; }
+  .alert-list { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; margin-bottom: 10px; }
+  .alert-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; border: 1px solid; }
+  .alert-row.red { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+  .alert-row.orange { background: rgba(249,115,22,0.06); border-color: rgba(249,115,22,0.15); }
+  .alert-row.yellow { background: rgba(234,179,8,0.06); border-color: rgba(234,179,8,0.12); }
+  .alert-row .a-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .alert-row.red .a-dot { background: #ef4444; } .alert-row.orange .a-dot { background: #f97316; } .alert-row.yellow .a-dot { background: #eab308; }
+  .alert-row .a-label { font-size: 11px; font-weight: 700; flex-shrink: 0; min-width: 32px; }
+  .alert-row.red .a-label { color: #fca5a5; } .alert-row.orange .a-label { color: #fdba74; } .alert-row.yellow .a-label { color: #fde047; }
+  .alert-row .a-text { font-size: 12px; color: #94a3b8; font-weight: 500; line-height: 1.4; }
+  .city-list { display: flex; flex-direction: column; gap: 3px; flex: 1; min-height: 0; overflow-y: auto; }
+  .city-list::-webkit-scrollbar { width: 3px; }
+  .city-list::-webkit-scrollbar-track { background: transparent; }
+  .city-list::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.15); border-radius: 2px; }
+  .city-row { display: flex; align-items: center; padding: 6px 10px; border-radius: 6px; background: rgba(30,41,59,0.3); gap: 8px; }
+  .city-row:hover { background: rgba(30,41,59,0.5); }
+  .city-row .c-name { font-size: 12px; font-weight: 600; min-width: 42px; color: #e2e8f0; }
+  .city-row .c-code { font-size: 10px; color: #475569; min-width: 30px; }
+  .city-row .c-bar { flex: 1; height: 5px; background: rgba(100,116,139,0.1); border-radius: 3px; overflow: hidden; }
+  .city-row .c-fill { height: 100%; border-radius: 3px; }
+  .city-row .c-mm { font-size: 11px; font-weight: 700; min-width: 70px; text-align: right; font-variant-numeric: tabular-nums; }
+  .city-row .c-unit { font-size: 9px; color: #475569; }
+  .right-inner { display: flex; flex-direction: column; height: 100%; }
+  .bar-list { display: flex; flex-direction: column; gap: 6px; flex: 1; min-height: 0; overflow-y: auto; }
+  .bar-list::-webkit-scrollbar { width: 3px; }
+  .bar-list::-webkit-scrollbar-track { background: transparent; }
+  .bar-list::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.15); border-radius: 2px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; }
+  .bar-row .b-name { font-size: 12px; font-weight: 600; min-width: 42px; color: #cbd5e1; }
+  .bar-row .b-code { font-size: 10px; color: #475569; min-width: 30px; }
+  .bar-row .b-bar { flex: 1; height: 8px; background: rgba(100,116,139,0.08); border-radius: 4px; overflow: hidden; }
+  .bar-row .b-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .bar-row .b-mm { font-size: 11px; font-weight: 700; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+  .footer { font-size: 10px; color: #334155; text-align: center; flex-shrink: 0; padding-top: 8px; margin-top: 8px; border-top: 1px solid rgba(100,116,139,0.08); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>未来24小时的降雨模型预警</h1>
+  <span class="time" id="headerTime"></span>
+</div>
+<div class="dashboard">
+  <div class="map-section">
+    <div id="map"></div>
+    <div class="map-overlay" id="mapOverlay"></div>
+  </div>
+  <div class="left-panel" id="leftPanel"></div>
+  <div class="right-panel" id="rightPanel"></div>
+</div>
+<script>
+var cityData = [{"name":"许昌","value":[113.82,34.03,3],"code":"374","rain":"暴雨","mm":"今50 明80","wind":"偏南风5~6级","temp":"--","level":"红色"},{"name":"淮安","value":[119.02,33.6,3],"code":"517","rain":"暴雨","mm":"今60 明100","wind":"偏东风6~7级","temp":"--","level":"红色"},{"name":"防城港","value":[108.35,21.62,3],"code":"770","rain":"暴雨","mm":"今40 明120","wind":"偏南风5~6级","temp":"--","level":"红色"},{"name":"西安","value":[108.94,34.26,2],"code":"029","rain":"大雨","mm":"今30 明50","wind":"偏北风3~4级","temp":"--","level":"橙色"},{"name":"青岛","value":[120.38,36.07,2],"code":"532","rain":"大雨","mm":"今25 明30","wind":"东南风5~6级","temp":"--","level":"橙色"},{"name":"昆明","value":[102.83,24.88,2],"code":"871","rain":"大雨","mm":"今15 明20","wind":"西南风3~4级","temp":"--","level":"橙色"},{"name":"南宁","value":[108.37,22.82,2],"code":"771","rain":"大雨","mm":"今30 明50","wind":"偏南风5~6级","temp":"--","level":"橙色"},{"name":"乌鲁木齐","value":[87.62,43.83,2],"code":"991","rain":"雷阵雨","mm":"今10 明15","wind":"西北风4~5级","temp":"--","level":"橙色"},{"name":"深圳","value":[114.07,22.62,1],"code":"755","rain":"中雨","mm":"今20 明30","wind":"偏南风4~5级","temp":"--","level":"黄色"},{"name":"海口","value":[110.2,20.05,1],"code":"898","rain":"中雨","mm":"今20 明10","wind":"偏南风3~4级","temp":"--","level":"黄色"},{"name":"重庆","value":[106.55,29.57,1],"code":"023","rain":"中雨","mm":"今5 明20","wind":"微风","temp":"41~42","level":"黄色"},{"name":"济南","value":[117,36.65,1],"code":"531","rain":"中雨","mm":"今10 明20","wind":"偏东风3~4级","temp":"--","level":"黄色"},{"name":"广州","value":[113.26,23.13,1],"code":"020","rain":"中雨","mm":"今15 明20","wind":"偏南风4~5级","temp":"--","level":"黄色"},{"name":"太原","value":[112.55,37.87,1],"code":"351","rain":"中雨","mm":"今10 明8","wind":"偏南风3级","temp":"--","level":"黄色"},{"name":"贵阳","value":[106.71,26.57,1],"code":"851","rain":"中雨","mm":"今5 明15","wind":"偏南风2~3级","temp":"--","level":"黄色"},{"name":"西宁","value":[101.74,36.56,1],"code":"971","rain":"中雨","mm":"今10 明5","wind":"偏东风2~3级","temp":"--","level":"黄色"},{"name":"长春","value":[125.32,43.82,1],"code":"431","rain":"中雨","mm":"今15 明20","wind":"偏南风3~4级","temp":"--","level":"黄色"},{"name":"北京","value":[116.4,39.9,1],"code":"010","rain":"雷阵雨","mm":"今5 明10","wind":"偏南风2~3级","temp":"35~36","level":"黄色"},{"name":"上海","value":[121.47,31.23,1],"code":"021","rain":"多云有阵雨","mm":"今0 明10","wind":"西南风3~4级","temp":"38~39","level":"黄色"},{"name":"南京","value":[118.8,32.06,1],"code":"025","rain":"多云","mm":"今0 明5","wind":"西南风3~4级","temp":"35~36","level":"黄色"},{"name":"杭州","value":[120.16,30.28,1],"code":"571","rain":"多云","mm":"今0 明8","wind":"南风3级","temp":"37~38","level":"黄色"},{"name":"合肥","value":[117.27,31.86,1],"code":"551","rain":"多云","mm":"今0 明5","wind":"南风3~4级","temp":"36~37","level":"黄色"},{"name":"成都","value":[104.07,30.67,1],"code":"028","rain":"雷阵雨","mm":"今10 明20","wind":"微风","temp":"--","level":"黄色"},{"name":"长沙","value":[112.94,28.23,1],"code":"731","rain":"多云有阵雨","mm":"今5 明10","wind":"南风3级","temp":"36~37","level":"黄色"},{"name":"南昌","value":[115.89,28.68,1],"code":"791","rain":"多云有阵雨","mm":"今5 明15","wind":"南风3~4级","temp":"36~37","level":"黄色"}];
+var levelMap = {'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308'};
+console.log('cityData loaded:', cityData.length, 'cities');
+console.log('levelMap:', JSON.stringify(levelMap));
+
+function updateTime(){
+  var now=new Date();
+  var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var el=document.getElementById('headerTime');
+  if(el) el.textContent=ts;
+}
+
+function buildLeftPanel(){
+  var rc=cityData.filter(function(c){return c.level==='红色'}).length;
+  var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
+  var yc=cityData.filter(function(c){return c.level==='黄色'}).length;
+  var tc=cityData.length;
+  var h='<div class="panel-title"><span class="icon"></span>预警统计</div><div class="stat-grid">';
+  h+='<div class="stat-box red"><div class="num">'+rc+'</div><div class="label">红色预警</div></div>';
+  h+='<div class="stat-box orange"><div class="num">'+oc+'</div><div class="label">橙色预警</div></div>';
+  h+='<div class="stat-box yellow"><div class="num">'+yc+'</div><div class="label">黄色预警</div></div>';
+  h+='<div class="stat-box blue"><div class="num">'+tc+'</div><div class="label">影响城市</div></div>';
+  h+='</div>';
+  h+='<div class="panel-title"><span class="icon"></span>预警信息</div><div class="alert-list">';
+  if(rc) h+='<div class="alert-row red"><span class="a-dot"></span><span class="a-label">红色</span><span class="a-text"><b>'+rc+'城</b> '+cityData.filter(function(c){return c.level==='红色'}).map(function(c){return c.name}).join('、')+' 暴雨</span></div>';
+  if(oc) h+='<div class="alert-row orange"><span class="a-dot"></span><span class="a-label">橙色</span><span class="a-text"><b>'+oc+'城</b> '+cityData.filter(function(c){return c.level==='橙色'}).map(function(c){return c.name}).join('、')+' 大雨</span></div>';
+  if(yc) h+='<div class="alert-row yellow"><span class="a-dot"></span><span class="a-label">黄色</span><span class="a-text"><b>'+yc+'城</b> '+cityData.filter(function(c){return c.level==='黄色'}).map(function(c){return c.name}).join('、')+' 中雨</span></div>';
+  h+='</div>';
+  h+='<div class="panel-title"><span class="icon"></span>城市降雨量</div><div class="city-list">';
+  var sorted=cityData.slice().sort(function(a,b){
+    var m1=a.mm.match(/\d+/);var m2=b.mm.match(/\d+/);
+    return (m2?parseInt(m2[0]):0)-(m1?parseInt(m1[0]):0);
+  });
+  var maxMm=parseInt(sorted[0]&&sorted[0].mm.match(/\d+/))||60;
+  sorted.forEach(function(c){
+    var mmMatch=c.mm.match(/\d+/);var mm=mmMatch?parseInt(mmMatch[0]):0;
+    var pct=Math.max(5,(mm/maxMm*100));
+    h+='<div class="city-row"><span class="c-name">'+c.name+'</span><span class="c-code">'+c.code+'</span><div class="c-bar"><div class="c-fill" style="width:'+pct+'%;background:'+levelMap[c.level]+'"></div></div><span class="c-mm" style="color:'+levelMap[c.level]+'">'+c.mm+'</span><span class="c-unit">mm</span></div>';
+  });
+  h+='</div><div class="footer">数据来源：中央气象台</div>';
+  document.getElementById('leftPanel').innerHTML=h;
+}
+
+function buildRightPanel(){
+  var h='<div class="panel-title"><span class="icon"></span>降雨量分布</div><div class="right-inner"><div class="bar-list">';
+  var sorted=cityData.slice().sort(function(a,b){
+    var m1=a.mm.match(/\d+/);var m2=b.mm.match(/\d+/);
+    return (m2?parseInt(m2[0]):0)-(m1?parseInt(m1[0]):0);
+  });
+  var maxMm=parseInt(sorted[0]&&sorted[0].mm.match(/\d+/))||60;
+  sorted.forEach(function(c){
+    var mmMatch=c.mm.match(/\d+/);var mm=mmMatch?parseInt(mmMatch[0]):0;
+    var pct=Math.max(5,(mm/maxMm*100));
+    h+='<div class="bar-row"><span class="b-name">'+c.name+'</span><span class="b-code">'+c.code+'</span><div class="b-bar"><div class="b-fill" style="width:'+pct+'%;background:'+levelMap[c.level]+'"></div></div><span class="b-mm" style="color:'+levelMap[c.level]+'">'+c.mm+'mm</span></div>';
+  });
+  h+='</div><div class="footer">全国降雨模型预测系统 v2.0</div></div>';
+  document.getElementById('rightPanel').innerHTML=h;
+}
+
+var chinaGeoUrl='https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.json';
+
+function renderMap(){
+  var el=document.getElementById('map');
+  var chart=echarts.init(el,null,{renderer:'svg'});
+  fetch(chinaGeoUrl).then(function(r){return r.json();}).then(function(geo){
+    echarts.registerMap('china',geo);
+    var rc=cityData.filter(function(c){return c.level==='红色'}).length;
+    var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
+    var yc=cityData.filter(function(c){return c.level==='黄色'}).length;
+    document.getElementById('mapOverlay').innerHTML='<h3>预警统计</h3>'
+      +'<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>'
+      +'<div class="stat"><span class="dot" style="background:#f97316"></span>橙色 '+oc+'城</div>'
+      +'<div class="stat"><span class="dot" style="background:#eab308"></span>黄色 '+yc+'城</div>';
+    chart.setOption({
+      tooltip:{
+        trigger:'item',
+        backgroundColor:'rgba(15,23,42,0.96)',borderColor:'#3b82f6',borderWidth:1,
+        textStyle:{color:'#e2e8f0',fontSize:13,fontFamily:'Noto Sans SC,Microsoft YaHei'},
+        formatter:function(p){
+          if(p.seriesName==='城市'){
+            var d=p.data;
+            return '<div style="padding:4px"><div style="font-size:15px;font-weight:700;color:#3b82f6;margin-bottom:4px">'+d.name+'</div>'
+              +'<div>天气：<b>'+d.rain+'</b></div>'
+              +'<div>降雨：<span style="color:'+levelMap[d.level]+'">'+d.mm+'mm</span></div>'
+              +'<div style="font-size:12px;color:#94a3b8">预警：'+d.level+'</div></div>';
+          }
+          return p.name;
+        }
+      },
+      geo:{
+        map:'china',roam:false,zoom:1.2,center:[105,36],
+        itemStyle:{areaColor:'#1e3a5f',borderColor:'#2d5a87',borderWidth:1,shadowColor:'rgba(0,0,0,0.3)',shadowBlur:10},
+        emphasis:{itemStyle:{areaColor:'#2d5a87',borderColor:'#4a90d9',borderWidth:1.5},label:{show:false}},
+        label:{show:false},silent:false
+      },
+      series:[{
+        name:'城市',type:'scatter',coordinateSystem:'geo',
+        data:cityData.map(function(c){return{name:c.name,value:c.value};}),
+        symbolSize:20,itemStyle:{color:'#fca5a5',shadowBlur:10,shadowColor:'rgba(252,165,165,0.5)'},
+        emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}}
+      },{
+        name:'城市',type:'effectScatter',coordinateSystem:'geo',
+        data:cityData.map(function(c){return{name:c.name,value:c.value};}).filter(function(d){return d.value[2]>=2;}),
+        symbolSize:22,showEffectOn:'render',rippleEffect:{brushType:'stroke',scale:3},
+        itemStyle:{color:'#f97316',shadowBlur:10,shadowColor:'rgba(249,115,22,0.5)'},
+        emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}},
+        zlevel:1
+      }]
+    });
+    window.addEventListener('resize',function(){chart.resize();});
+  });
+}
+
+function init(){
+  updateTime();
+  buildLeftPanel();
+  buildRightPanel();
+  renderMap();
+}
+
+if(document.readyState==='complete') init();
+else window.addEventListener('load',init);
+</script>
+</body>
+</html>
