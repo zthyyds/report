@@ -8,57 +8,78 @@
 <script src="https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: "Microsoft YaHei","PingFang SC","SimHei","SimSun",sans-serif; background: linear-gradient(135deg,#1a2332 0%,#1e293b 40%,#1a2332 100%); color: #cbd5e1; overflow: hidden; }
-  .header { height: 100px; background: linear-gradient(180deg,#1e293b,#1a2332); border-bottom: 1px solid rgba(100,116,139,0.2); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
-  .header h1 { font-size: 48px; font-weight: 900; color: #93c5fd; letter-spacing: 8px; }
-  .header h1 span { color: #fca5a5; font-size: 28px; padding: 6px 24px; border-radius: 10px; background: rgba(248,113,113,0.15); margin-left: 24px; vertical-align: middle; font-weight: 900; border: 2px solid rgba(248,113,113,0.3); }
-  .header .time { position: absolute; right: 28px; color: #64748b; font-size: 36px; font-weight: 700; }
-  .dashboard { display: grid; grid-template-rows: 500px 1fr; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; height: calc(100vh - 100px); }
-  .map-section { grid-column: 1 / -1; }
-  .bottom-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .panel { background: rgba(30,41,59,0.9); border: 1px solid rgba(100,116,139,0.2); border-radius: 16px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; overflow: hidden; height: 100%; }
-  .panel-title { font-size: 30px; font-weight: 900; color: #93c5fd; display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-bottom: 10px; margin-bottom: 8px; }
-  .panel-title::before { content: ''; width: 6px; height: 30px; background: linear-gradient(180deg,#3b82f6,#60a5fa); border-radius: 2px; }
-  .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex-shrink: 0; }
-  .stat-card { background: rgba(51,65,85,0.6); border: 1px solid rgba(100,116,139,0.15); border-radius: 14px; padding: 52px 28px; text-align: center; }
-  .stat-card .num { font-size: 68px; font-weight: 900; line-height: 1; }
-  .stat-card .label { font-size: 22px; color: #94a3b8; margin-top: 8px; font-weight: 700; }
-  .alert-item { padding: 26px 26px; border-radius: 12px; display: flex; gap: 14px; align-items: flex-start; }
-  .alert-red { background: rgba(248,113,113,0.08); border-left: 3px solid #ef4444; }
-  .alert-orange { background: rgba(251,146,60,0.08); border-left: 3px solid #f97316; }
-  .alert-yellow { background: rgba(250,204,21,0.06); border-left: 3px solid #eab308; }
-  .alert-item .tag { font-size: 22px; font-weight: 900; padding: 6px 18px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
-  .alert-red .tag { background: rgba(248,113,113,0.2); color: #fca5a5; }
-  .alert-orange .tag { background: rgba(251,146,60,0.2); color: #fdba74; }
-  .alert-yellow .tag { background: rgba(250,204,21,0.15); color: #fde047; }
-  .alert-item .text { font-size: 22px; color: #cbd5e1; line-height: 1.75; font-weight: 500; }
-  .city-list { display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; }
-  .city-item { display: flex; align-items: center; padding: 28px 24px; border-radius: 6px; background: rgba(51,65,85,0.4); }
-  .city-item .dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 14px; flex-shrink: 0; }
-  .city-item .name { font-size: 26px; font-weight: 700; min-width: 56px; color: #e2e8f0; }
-  .city-item .code { font-size: 18px; color: #64748b; min-width: 44px; font-weight: 500; }
-  .city-item .rain { font-size: 26px; margin-left: auto; font-weight: 900; }
-  .city-item .level { font-size: 16px; padding: 4px 16px; border-radius: 8px; margin-left: 12px; font-weight: 900; }
-  .map-section { position: relative; background: #0f172a; border: 1px solid rgba(100,116,139,0.15); border-radius: 12px; overflow: hidden; }
+  body { font-family: -apple-system,"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; background: #0a0f1e; color: #e2e8f0; overflow: hidden; }
+  .header { height: 64px; background: linear-gradient(90deg,#0a0f1e 0%,#111827 50%,#0a0f1e 100%); border-bottom: 1px solid rgba(100,116,139,0.15); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+  .header h1 { font-size: 22px; font-weight: 800; color: #f1f5f9; letter-spacing: 2px; display:flex;align-items:center;gap:12px; }
+  .header h1 .badge { font-size: 12px; font-weight: 700; color: #fca5a5; padding: 4px 12px; border-radius: 20px; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); letter-spacing: 1px; }
+  .header .time { color: #64748b; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dashboard { display: grid; grid-template-rows: 480px 1fr; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; height: calc(100vh - 64px); }
+  .map-section { grid-column: 1 / -1; position: relative; background: #0d1321; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; overflow: hidden; }
   #map { width: 100%; height: 100%; }
-  .map-overlay { position: absolute; top: 20px; left: 20px; z-index: 10; background: rgba(30,41,59,0.95); border: 1px solid rgba(100,116,139,0.2); border-radius: 12px; padding: 18px 24px; }
-  .map-overlay h3 { font-size: 20px; color: #93c5fd; margin-bottom: 10px; font-weight: 900; }
-  .map-overlay .stat { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 18px; color: #cbd5e1; font-weight: 500; }
-  .map-overlay .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .typhoon-box { background: rgba(234,179,8,0.06); border: 1px solid rgba(234,179,8,0.2); border-radius: 12px; padding: 30px; flex-shrink: 0; }
-  .typhoon-box .title { font-size: 30px; font-weight: 900; color: #eab308; margin-bottom: 12px; }
-  .typhoon-box .info { font-size: 22px; color: #cbd5e1; line-height: 2.0; font-weight: 500; }
-  .right-stats { display: flex; flex-direction: column; gap: 28px; flex: 1; }
-  .bar-item .label { font-size: 22px; color: #94a3b8; display: flex; justify-content: space-between; font-weight: 700; }
-  .bar-item .bar { height: 28px; background: rgba(100,116,139,0.2); border-radius: 10px; overflow: hidden; margin-top: 8px; }
-  .bar-item .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
-  .panel-footer { font-size: 16px; color: #475569; text-align: center; flex-shrink: 0; padding-top: 14px; margin-top: 14px; border-top: 1px solid rgba(100,116,139,0.15); letter-spacing: 3px; font-weight: 600; }
-@media(max-width:900px){body{overflow-y:auto!important}.header{height:44px;padding:0 10px}.header h1{font-size:15px;letter-spacing:0}.header h1 span{font-size:10px;padding:2px 6px;margin-left:4px;border-width:1px}.header .time{display:none}.dashboard{grid-template-columns:1fr;gap:8px;padding:8px;height:auto!important}.panel{padding:10px 12px;border-radius:10px;height:auto!important}.panel-title{font-size:16px;padding-bottom:4px;margin-bottom:2px}.panel-title::before{width:3px;height:14px}.stat-cards{gap:6px;grid-template-columns:1fr 1fr}.stat-card{padding:12px 8px;border-radius:8px}.stat-card .num{font-size:28px}.stat-card .label{font-size:11px;margin-top:2px}.alert-item{padding:8px 10px;gap:6px;margin-bottom:6px}.alert-item .tag{font-size:12px;padding:2px 6px}.alert-item .text{font-size:12px;line-height:1.5}.city-list{gap:4px}.city-item{padding:8px 10px}.city-item .dot{width:7px;height:7px;margin-right:6px}.city-item .name{font-size:14px;min-width:36px}.city-item .code{font-size:10px;min-width:28px}.city-item .rain{font-size:14px}.city-item .level{font-size:10px;padding:1px 6px;margin-left:4px}.map-section{height:280px;min-height:280px}.map-overlay{top:6px;left:6px;padding:6px 10px}.map-overlay h3{font-size:13px;margin-bottom:3px}.map-overlay .stat{font-size:11px;margin:1px 0}.typhoon-box{padding:12px;margin-top:6px}.typhoon-box .title{font-size:18px;margin-bottom:4px}.typhoon-box .info{font-size:14px;line-height:1.6}.right-stats{gap:8px}.bar-item .label{font-size:14px}.bar-item .bar{height:10px;margin-top:4px}.panel-footer{font-size:11px;padding-top:6px;margin-top:6px}}
+  .map-overlay { position: absolute; top: 14px; left: 14px; z-index: 10; background: rgba(17,24,39,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(100,116,139,0.15); border-radius: 12px; padding: 14px 18px; }
+  .map-overlay h3 { font-size: 13px; color: #94a3b8; margin-bottom: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .map-overlay .stat { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; color: #cbd5e1; font-weight: 500; }
+  .map-overlay .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .bottom-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; }
+  .panel { background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 0; overflow: hidden; height: 100%; }
+  .panel-title { font-size: 15px; font-weight: 700; color: #93c5fd; display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(100,116,139,0.1); letter-spacing: 0.5px; }
+  .panel-title .icon { width: 4px; height: 16px; border-radius: 2px; background: #3b82f6; flex-shrink: 0; }
+  .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; flex-shrink: 0; margin-bottom: 14px; }
+  .stat-chip { background: rgba(30,41,59,0.8); border: 1px solid rgba(100,116,139,0.1); border-radius: 10px; padding: 12px 10px; text-align: center; position: relative; overflow: hidden; }
+  .stat-chip::after { content:''; position:absolute; top:0; left:0; right:0; height: 2px; }
+  .stat-chip.red::after { background: #ef4444; } .stat-chip.orange::after { background: #f97316; }
+  .stat-chip.yellow::after { background: #eab308; } .stat-chip.blue::after { background: #3b82f6; }
+  .stat-chip .num { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .stat-chip.red .num { color: #fca5a5; } .stat-chip.orange .num { color: #fdba74; }
+  .stat-chip.yellow .num { color: #fde047; } .stat-chip.blue .num { color: #93c5fd; }
+  .stat-chip .label { font-size: 11px; color: #64748b; margin-top: 3px; font-weight: 600; }
+  .alert-section { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; margin-bottom: 14px; }
+  .alert-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; border: 1px solid; }
+  .alert-row.red { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+  .alert-row.orange { background: rgba(249,115,22,0.06); border-color: rgba(249,115,22,0.15); }
+  .alert-row.yellow { background: rgba(234,179,8,0.06); border-color: rgba(234,179,8,0.12); }
+  .alert-row .a-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .alert-row.red .a-dot { background: #ef4444; } .alert-row.orange .a-dot { background: #f97316; } .alert-row.yellow .a-dot { background: #eab308; }
+  .alert-row .a-label { font-size: 11px; font-weight: 700; flex-shrink: 0; min-width: 36px; }
+  .alert-row.red .a-label { color: #fca5a5; } .alert-row.orange .a-label { color: #fdba74; } .alert-row.yellow .a-label { color: #fde047; }
+  .alert-row .a-text { font-size: 12px; color: #94a3b8; font-weight: 500; line-height: 1.5; }
+  .city-table-header { display: flex; padding: 6px 14px 8px; font-size: 11px; color: #475569; font-weight: 700; letter-spacing: 0.5px; border-bottom: 1px solid rgba(100,116,139,0.08); flex-shrink: 0; }
+  .city-table-header .th-name { min-width: 48px; }
+  .city-table-header .th-code { min-width: 36px; }
+  .city-table-header .th-mm { margin-left: auto; }
+  .city-table-header .th-level { min-width: 32px; margin-left: 8px; }
+  .city-list { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; overflow-y: auto; }
+  .city-list::-webkit-scrollbar { width: 4px; }
+  .city-list::-webkit-scrollbar-track { background: transparent; }
+  .city-list::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.2); border-radius: 2px; }
+  .city-item { display: flex; align-items: center; padding: 8px 14px; border-radius: 8px; background: rgba(30,41,59,0.3); transition: background 0.2s; }
+  .city-item:hover { background: rgba(30,41,59,0.6); }
+  .city-item .dot { width: 6px; height: 6px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
+  .city-item .name { font-size: 13px; font-weight: 600; min-width: 48px; color: #e2e8f0; }
+  .city-item .code { font-size: 11px; color: #475569; min-width: 36px; font-weight: 500; }
+  .city-item .mm { font-size: 13px; margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .city-item .level { font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 700; }
+  .city-item .level.red { background: rgba(239,68,68,0.12); color: #fca5a5; }
+  .city-item .level.orange { background: rgba(249,115,22,0.12); color: #fdba74; }
+  .city-item .level.yellow { background: rgba(234,179,8,0.12); color: #fde047; }
+  .right-panel-inner { display: flex; flex-direction: column; height: 100%; }
+  .bar-list { display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; overflow-y: auto; }
+  .bar-list::-webkit-scrollbar { width: 4px; }
+  .bar-list::-webkit-scrollbar-track { background: transparent; }
+  .bar-list::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.2); border-radius: 2px; }
+  .bar-item .b-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .bar-item .b-name { font-size: 12px; font-weight: 600; color: #cbd5e1; }
+  .bar-item .b-code { font-size: 10px; color: #475569; }
+  .bar-item .b-mm { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bar-item .b-bar { height: 6px; background: rgba(100,116,139,0.12); border-radius: 3px; overflow: hidden; }
+  .bar-item .b-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+  .panel-footer { font-size: 11px; color: #334155; text-align: center; flex-shrink: 0; padding-top: 10px; margin-top: 10px; border-top: 1px solid rgba(100,116,139,0.08); letter-spacing: 1px; }
+@media(max-width:900px){body{overflow-y:auto!important}.header{height:40px;padding:0 12px}.header h1{font-size:13px}.header .time{font-size:11px}.dashboard{grid-template-rows:260px 1fr;gap:10px;padding:10px;height:auto!important}.bottom-row{grid-template-columns:1fr;gap:10px}.panel{padding:10px 12px;border-radius:10px;height:auto!important}.panel-title{font-size:13px;padding-bottom:6px;margin-bottom:6px}.stat-row{gap:6px;grid-template-columns:repeat(4,1fr)}.stat-chip{padding:8px 6px;border-radius:8px}.stat-chip .num{font-size:20px}.stat-chip .label{font-size:9px}.alert-row{padding:6px 10px}.alert-row .a-label{font-size:10px}.alert-row .a-text{font-size:10px}.city-item{padding:6px 10px}.city-item .name{font-size:11px}.city-item .mm{font-size:11px}.bar-item .b-name{font-size:10px}.bar-item .b-mm{font-size:10px}.map-overlay{top:8px;left:8px;padding:8px 12px}.map-overlay h3{font-size:11px}.map-overlay .stat{font-size:10px;margin:2px 0}}
 </style>
 </head>
 <body>
 <div class="header">
-  <h1>未来24小时的降雨模型预警</h1>
+  <h1>未来24小时的降雨模型预警 <span class="badge" id="alertBadge">● 生效中</span></h1>
   <span class="time" id="headerTime"></span>
 </div>
 <div class="dashboard">
@@ -83,47 +104,64 @@ function updateTime(){
 }
 
 function buildLeftPanel(){
-  var h = '<div class="panel-title">未来24小时的降雨模型预警统计</div>';
-  h += '<div class="stat-cards">';
-  h += '<div class="stat-card"><div class="num" style="color:#ef4444">2</div><div class="label">红色预警</div></div>';
-  h += '<div class="stat-card"><div class="num" style="color:#f97316">4</div><div class="label">橙色预警</div></div>';
-  h += '<div class="stat-card"><div class="num" style="color:#eab308">7</div><div class="label">黄色预警</div></div>';
-  h += '<div class="stat-card"><div class="num" style="color:#60a5fa">13</div><div class="label">影响城市</div></div>';
+  var redCount = cityData.filter(function(c){return c.level==='红色'}).length;
+  var orangeCount = cityData.filter(function(c){return c.level==='橙色'}).length;
+  var yellowCount = cityData.filter(function(c){return c.level==='黄色'}).length;
+  var totalCount = cityData.length;
+  var h = '<div class="panel-title"><span class="icon"></span>预警统计</div>';
+  h += '<div class="stat-row">';
+  h += '<div class="stat-chip red"><div class="num">'+redCount+'</div><div class="label">红色预警</div></div>';
+  h += '<div class="stat-chip orange"><div class="num">'+orangeCount+'</div><div class="label">橙色预警</div></div>';
+  h += '<div class="stat-chip yellow"><div class="num">'+yellowCount+'</div><div class="label">黄色预警</div></div>';
+  h += '<div class="stat-chip blue"><div class="num">'+totalCount+'</div><div class="label">影响城市</div></div>';
   h += '</div>';
-  h += '<div class="panel-title" style="margin-top:12px">预警信息</div>';
-  h += '<div class="alert-item alert-red"><span class="tag">红色</span><span class="text"><b>2城红色预警</b>：郑州、深圳暴雨。</span></div>';
-  h += '<div class="alert-item alert-orange"><span class="tag">橙色</span><span class="text"><b>4城橙色预警</b>：西安、青岛、昆明、南宁大雨。</span></div>';
-  h += '<div class="alert-item alert-yellow"><span class="tag">黄色</span><span class="text"><b>7城黄色预警</b>：海口、重庆、济南、广州、太原、贵阳、西宁中雨。</span></div>';
-    h += '<div class="panel-title" style="margin-top:12px">城市降雨量</div>';
+  h += '<div class="panel-title"><span class="icon"></span>预警信息</div>';
+  h += '<div class="alert-section">';
+  if(redCount) h += '<div class="alert-row red"><span class="a-dot"></span><span class="a-label">红色</span><span class="a-text">'+redCount+'城红色预警：'+cityData.filter(function(c){return c.level==='红色'}).map(function(c){return c.name}).join('、')+'暴雨。</span></div>';
+  if(orangeCount) h += '<div class="alert-row orange"><span class="a-dot"></span><span class="a-label">橙色</span><span class="a-text">'+orangeCount+'城橙色预警：'+cityData.filter(function(c){return c.level==='橙色'}).map(function(c){return c.name}).join('、')+'大雨。</span></div>';
+  if(yellowCount) h += '<div class="alert-row yellow"><span class="a-dot"></span><span class="a-label">黄色</span><span class="a-text">'+yellowCount+'城黄色预警：'+cityData.filter(function(c){return c.level==='黄色'}).map(function(c){return c.name}).join('、')+'中雨。</span></div>';
+  h += '</div>';
+  h += '<div class="panel-title"><span class="icon"></span>城市降雨量</div>';
+  h += '<div class="city-table-header"><span class="th-name">城市</span><span class="th-code">区号</span><span class="th-mm">今/明 (mm)</span><span class="th-level">级别</span></div>';
   h += '<div class="city-list">';
   cityData.forEach(function(c){
+    var lv = c.level==='红色'?'red':c.level==='橙色'?'orange':'yellow';
     h += '<div class="city-item">';
     h += '<span class="dot" style="background:'+levelMap[c.level]+'"></span>';
     h += '<span class="name">'+c.name+'</span>';
     h += '<span class="code">'+c.code+'</span>';
-    h += '<span class="rain" style="color:'+levelMap[c.level]+'">'+c.mm+'mm</span>';
-    h += '<span class="level" style="background:'+levelMap[c.level]+'22;color:'+levelMap[c.level]+'">'+c.level+'</span>';
+    h += '<span class="mm" style="color:'+levelMap[c.level]+'">'+c.mm+'mm</span>';
+    h += '<span class="level '+lv+'">'+c.level+'</span>';
     h += '</div>';
   });
   h += '</div>';
-  h += '<div class="panel-footer">数据来源：中央气象台 | 更新：2026-07-13 14:30</div>';
+  h += '<div class="panel-footer">数据来源：中央气象台 | '+new Date().toLocaleString('zh-CN',{hour12:false})+'</div>';
   document.getElementById('leftPanel').innerHTML = h;
+  // Update badge color based on highest alert
+  var badge = document.getElementById('alertBadge');
+  if(badge){
+    if(redCount){badge.style.color='#fca5a5';badge.style.background='rgba(239,68,68,0.12)';badge.style.borderColor='rgba(239,68,68,0.25)';}
+    else if(orangeCount){badge.style.color='#fdba74';badge.style.background='rgba(249,115,22,0.12)';badge.style.borderColor='rgba(249,115,22,0.25)';}
+    else{badge.style.color='#fde047';badge.style.background='rgba(234,179,8,0.12)';badge.style.borderColor='rgba(234,179,8,0.25)';}
+  }
 }
 
 function buildRightPanel(){
-  var h = '<div class="panel-title">降雨量分布</div>';
-  h += '<div class="right-stats">';
-  var sorted = cityData.slice().sort(function(a,b){ return parseInt(b.mm) - parseInt(a.mm); });
-  var maxMm = parseInt(sorted[0].mm) || 100;
+  var h = '<div class="panel-title"><span class="icon"></span>降雨量分布</div>';
+  h += '<div class="right-panel-inner"><div class="bar-list">';
+  var sorted = cityData.slice().sort(function(a,b){
+    var aMm=parseInt(a.mm)||0; var bMm=parseInt(b.mm)||0; return bMm-aMm;
+  });
+  var maxMm = parseInt(sorted[0] && sorted[0].mm) || 60;
   sorted.forEach(function(c){
-    var mm = parseInt(c.mm) || 10;
-    var pct = Math.min(100, (mm / maxMm * 100));
+    var mm = parseInt(c.mm) || 0;
+    var pct = Math.max(4, Math.min(100, (mm / maxMm * 100)));
     h += '<div class="bar-item">';
-    h += '<div class="label"><span>'+c.name+' '+c.code+'</span><span style="color:'+levelMap[c.level]+'">'+c.mm+'mm</span></div>';
-    h += '<div class="bar"><div class="bar-fill" style="width:'+pct+'%;background:'+levelMap[c.level]+'"></div></div>';
+    h += '<div class="b-row"><span><span class="b-name">'+c.name+'</span> <span class="b-code">'+c.code+'</span></span><span class="b-mm" style="color:'+levelMap[c.level]+'">'+c.mm+'mm</span></div>';
+    h += '<div class="b-bar"><div class="b-fill" style="width:'+pct+'%;background:'+levelMap[c.level]+'"></div></div>';
     h += '</div>';
   });
-  h += '</div>';
+  h += '</div></div>';
   h += '<div class="panel-footer">全国降雨模型预测系统</div>';
   document.getElementById('rightPanel').innerHTML = h;
 }
@@ -137,10 +175,13 @@ function renderMap(){
 
   echarts.registerMap('china', CHINA_GEOJSON);
 
+  var rc=cityData.filter(function(c){return c.level==='红色'}).length;
+  var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
+  var yc=cityData.filter(function(c){return c.level==='黄色'}).length;
   document.getElementById('mapOverlay').innerHTML = '<h3>预警统计</h3>'
-    + '<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 3城</div>'
-    + '<div class="stat"><span class="dot" style="background:#f97316"></span>橙色 3城</div>'
-    + '<div class="stat"><span class="dot" style="background:#eab308"></span>黄色 1城</div>';
+    + '<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>'
+    + '<div class="stat"><span class="dot" style="background:#f97316"></span>橙色 '+oc+'城</div>'
+    + '<div class="stat"><span class="dot" style="background:#eab308"></span>黄色 '+yc+'城</div>';
 
   chart.setOption({
     tooltip: {
