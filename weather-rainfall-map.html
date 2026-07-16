@@ -140,12 +140,15 @@ function buildRightPanel(){
   document.getElementById('rightPanel').innerHTML=h;
 }
 
-var chinaGeoUrl='https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json';
+var chinaGeoUrl='https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/geo/china.json';
 
 function renderMap(){
   var el=document.getElementById('map');
-  var chart=echarts.init(el,null,{renderer:'svg'});
-  fetch(chinaGeoUrl).then(function(r){return r.json();}).then(function(geo){
+  var chart=echarts.init(el,null,{renderer:'canvas'});
+  fetch(chinaGeoUrl,{mode:'cors'}).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(geo){
     echarts.registerMap('china',geo);
     var rc=cityData.filter(function(c){return c.level==='红色'}).length;
     var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
@@ -193,6 +196,9 @@ function renderMap(){
       }]
     });
     window.addEventListener('resize',function(){chart.resize();});
+  }).catch(function(e){
+    console.error('地图GeoJSON加载失败:',e);
+    document.getElementById('mapOverlay').innerHTML='<h3 style="color:#ef4444">地图加载失败</h3><div class="stat" style="color:#94a3b8">'+e.message+'</div>';
   });
 }
 
