@@ -36,6 +36,9 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
 .city .bf{height:100%;border-radius:2px}
 .city .mm{font-size:11px;font-weight:700;min-width:60px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .footer{font-size:10px;color:#334155;text-align:center;padding:8px 0 16px;letter-spacing:1px}
+.map-wrap{position:relative;width:100%;padding-top:56%;background:#0d1321;border-radius:12px;overflow:hidden;border:1px solid rgba(100,116,139,0.12)}
+.map-wrap svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.map-label{font-size:9px;fill:#94a3b8;text-anchor:middle;font-family:"Microsoft YaHei",sans-serif}
 </style>
 </head>
 <body>
@@ -43,7 +46,114 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
   <h1>未来24小时降雨预警</h1>
   <span class="time" id="ht"></span>
 </div>
-<div class="wrap" id="app"></div>
+<div class="wrap" id="app">
+  <div class="map-wrap" id="mapWrap">
+    <svg viewBox="0 0 400 224" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g id="china" fill="#1e3a5f" stroke="#2d5a87" stroke-width="0.5" opacity="0.7">
+        <path d="M80,40 L95,25 L120,15 L155,10 L185,8 L220,12 L260,20 L300,35 L330,50 L355,70 L375,90 L385,110 L380,130 L365,145 L345,155 L330,165 L310,175 L290,180 L265,178 L240,175 L220,168 L200,155 L185,140 L170,125 L160,110 L155,95 L148,80 L135,70 L120,60 L105,52 Z"/>
+        <path d="M155,10 L170,5 L190,3 L210,8 L225,18 L220,12 Z" fill="#1a3050"/>
+        <path d="M260,20 L280,15 L300,18 L315,25 L300,35 Z" fill="#1a3050"/>
+        <path d="M330,165 L345,170 L355,180 L350,190 L340,195 L330,188 L320,178 Z" fill="#1a3050"/>
+        <path d="M300,180 L310,190 L315,200 L308,208 L298,205 L292,195 Z" fill="#1a3050"/>
+        <path d="M170,125 L175,135 L180,145 L175,155 L165,150 L160,140 L162,130 Z" fill="#1a3050"/>
+        <path d="M200,155 L210,160 L218,170 L212,178 L202,175 L196,165 Z" fill="#1a3050"/>
+        <path d="M240,175 L250,180 L255,188 L248,192 L238,188 L234,180 Z" fill="#1a3050"/>
+        <path d="M265,178 L275,185 L278,195 L272,200 L262,196 L258,186 Z" fill="#1a3050"/>
+        <path d="M148,80 L140,75 L135,82 L140,90 L148,88 Z" fill="#1a3050"/>
+        <path d="M120,60 L110,55 L105,62 L112,70 L120,68 Z" fill="#1a3050"/>
+        <rect x="335" y="170" width="22" height="35" rx="2" fill="#0d1321" stroke="#2d5a87" stroke-width="0.5"/>
+        <line x1="338" y1="176" x2="354" y2="176" stroke="#2d5a87" stroke-width="0.3"/>
+        <line x1="338" y1="182" x2="354" y2="182" stroke="#2d5a87" stroke-width="0.3"/>
+        <line x1="338" y1="188" x2="354" y2="188" stroke="#2d5a87" stroke-width="0.3"/>
+        <line x1="338" y1="194" x2="354" y2="194" stroke="#2d5a87" stroke-width="0.3"/>
+        <line x1="338" y1="200" x2="354" y2="200" stroke="#2d5a87" stroke-width="0.3"/>
+      </g>
+      <g id="provinces" fill="none" stroke="#2d5a87" stroke-width="0.4" opacity="0.5">
+        <path d="M155,50 L175,48 L195,52 L210,58 L200,70 L185,75 L168,72 L158,62 Z"/>
+        <path d="M168,72 L185,75 L200,70 L215,78 L220,90 L210,100 L195,105 L180,100 L170,90 L165,80 Z"/>
+        <path d="M200,70 L215,78 L230,75 L245,80 L255,72 L265,78 L270,90 L260,100 L245,105 L230,100 L220,90 Z"/>
+        <path d="M230,100 L245,105 L260,100 L275,105 L285,115 L280,130 L270,140 L255,145 L240,140 L230,130 L225,115 Z"/>
+        <path d="M270,90 L285,95 L300,100 L310,110 L305,125 L295,135 L285,130 L275,120 L270,110 Z"/>
+        <path d="M305,125 L315,130 L325,140 L320,155 L310,160 L300,155 L295,145 L295,135 Z"/>
+        <path d="M285,130 L295,135 L300,155 L310,160 L305,175 L295,180 L285,175 L278,165 L275,150 L270,140 Z"/>
+        <path d="M255,145 L270,140 L275,150 L278,165 L270,175 L260,178 L248,175 L240,165 L238,155 L245,148 Z"/>
+        <path d="M225,115 L230,130 L240,140 L238,155 L228,162 L218,158 L210,148 L208,135 L212,122 Z"/>
+        <path d="M210,100 L220,90 L230,100 L225,115 L212,122 L208,135 L198,140 L188,135 L180,125 L182,112 L190,105 Z"/>
+        <path d="M180,100 L195,105 L190,105 L182,112 L180,125 L170,130 L160,125 L155,115 L158,105 L165,98 Z"/>
+        <path d="M195,105 L210,100 L212,122 L208,135 L198,140 L188,135 L180,125 L185,115 Z"/>
+        <path d="M210,148 L218,158 L228,162 L238,155 L240,165 L232,175 L220,178 L210,172 L202,162 L205,152 Z"/>
+        <path d="M188,135 L198,140 L208,135 L210,148 L205,152 L202,162 L192,168 L182,162 L175,152 L178,142 Z"/>
+        <path d="M170,130 L180,125 L188,135 L178,142 L175,152 L165,155 L155,150 L150,140 L152,130 L160,125 Z"/>
+        <path d="M232,175 L240,165 L248,175 L260,178 L268,185 L262,192 L250,195 L240,190 L235,182 Z"/>
+        <path d="M210,172 L220,178 L232,175 L235,182 L228,190 L218,192 L208,188 L202,180 L205,175 Z"/>
+        <path d="M192,168 L202,162 L205,175 L202,180 L195,185 L185,182 L178,175 L180,168 Z"/>
+      </g>
+      <g id="cities" filter="url(#glow)">
+        <circle cx="260" cy="95" r="4" fill="#ef4444" opacity="0.9"/>
+        <circle cx="260" cy="95" r="8" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.4"/>
+        <text x="260" y="106" class="map-label">淮安</text>
+        <circle cx="255" cy="108" r="4" fill="#ef4444" opacity="0.9"/>
+        <circle cx="255" cy="108" r="8" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.4"/>
+        <text x="255" y="119" class="map-label">许昌</text>
+        <circle cx="245" cy="175" r="4" fill="#ef4444" opacity="0.9"/>
+        <circle cx="245" cy="175" r="8" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.4"/>
+        <text x="245" y="187" class="map-label">防城港</text>
+        <circle cx="225" cy="100" r="3.5" fill="#f97316" opacity="0.9"/>
+        <circle cx="225" cy="100" r="6" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.3"/>
+        <text x="225" y="111" class="map-label">西安</text>
+        <circle cx="235" cy="165" r="3.5" fill="#f97316" opacity="0.9"/>
+        <circle cx="235" cy="165" r="6" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.3"/>
+        <text x="235" y="176" class="map-label">南宁</text>
+        <circle cx="285" cy="88" r="3.5" fill="#f97316" opacity="0.9"/>
+        <circle cx="285" cy="88" r="6" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.3"/>
+        <text x="285" y="99" class="map-label">青岛</text>
+        <circle cx="218" cy="145" r="3.5" fill="#f97316" opacity="0.9"/>
+        <circle cx="218" cy="145" r="6" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.3"/>
+        <text x="218" y="156" class="map-label">昆明</text>
+        <circle cx="145" cy="65" r="3.5" fill="#f97316" opacity="0.9"/>
+        <circle cx="145" cy="65" r="6" fill="none" stroke="#f97316" stroke-width="0.8" opacity="0.3"/>
+        <text x="145" y="76" class="map-label">乌鲁木齐</text>
+        <circle cx="250" cy="158" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="250" y="169" class="map-label">深圳</text>
+        <circle cx="242" cy="185" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="242" y="196" class="map-label">海口</text>
+        <circle cx="248" cy="152" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="248" y="163" class="map-label">广州</text>
+        <circle cx="305" cy="55" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="305" y="66" class="map-label">长春</text>
+        <circle cx="275" cy="105" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="275" y="116" class="map-label">济南</text>
+        <circle cx="248" cy="85" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="248" y="96" class="map-label">太原</text>
+        <circle cx="208" cy="125" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="208" y="136" class="map-label">成都</text>
+        <circle cx="195" cy="95" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="195" y="106" class="map-label">西宁</text>
+        <circle cx="222" cy="128" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="222" y="139" class="map-label">重庆</text>
+        <circle cx="228" cy="140" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="228" y="151" class="map-label">贵阳</text>
+        <circle cx="272" cy="82" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="272" y="93" class="map-label">北京</text>
+        <circle cx="242" cy="130" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="242" y="141" class="map-label">长沙</text>
+        <circle cx="258" cy="128" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="258" y="139" class="map-label">南昌</text>
+        <circle cx="295" cy="115" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="295" y="126" class="map-label">上海</text>
+        <circle cx="288" cy="118" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="288" y="129" class="map-label">南京</text>
+        <circle cx="292" cy="125" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="292" y="136" class="map-label">杭州</text>
+        <circle cx="282" cy="118" r="3" fill="#eab308" opacity="0.9"/>
+        <text x="282" y="129" class="map-label">合肥</text>
+      </g>
+    </svg>
+  </div>
+</div>
 <div class="footer">数据来源：中央气象台 | 全国降雨模型预测系统</div>
 <script>
 var cityData=[{"name":"淮安","code":"517","mm":"今60 明100","level":"红色"},{"name":"许昌","code":"374","mm":"今50 明80","level":"红色"},{"name":"防城港","code":"770","mm":"今40 明120","level":"红色"},{"name":"西安","code":"029","mm":"今30 明50","level":"橙色"},{"name":"南宁","code":"771","mm":"今30 明50","level":"橙色"},{"name":"青岛","code":"532","mm":"今25 明30","level":"橙色"},{"name":"昆明","code":"871","mm":"今15 明20","level":"橙色"},{"name":"乌鲁木齐","code":"991","mm":"今10 明15","level":"橙色"},{"name":"深圳","code":"755","mm":"今20 明30","level":"黄色"},{"name":"海口","code":"898","mm":"今20 明10","level":"黄色"},{"name":"广州","code":"020","mm":"今15 明20","level":"黄色"},{"name":"长春","code":"431","mm":"今15 明20","level":"黄色"},{"name":"济南","code":"531","mm":"今10 明20","level":"黄色"},{"name":"太原","code":"351","mm":"今10 明8","level":"黄色"},{"name":"成都","code":"028","mm":"今10 明20","level":"黄色"},{"name":"西宁","code":"971","mm":"今10 明5","level":"黄色"},{"name":"重庆","code":"023","mm":"今5 明20","level":"黄色"},{"name":"贵阳","code":"851","mm":"今5 明15","level":"黄色"},{"name":"北京","code":"010","mm":"今5 明10","level":"黄色"},{"name":"长沙","code":"731","mm":"今5 明10","level":"黄色"},{"name":"南昌","code":"791","mm":"今5 明15","level":"黄色"},{"name":"上海","code":"021","mm":"今0 明10","level":"黄色"},{"name":"南京","code":"025","mm":"今0 明5","level":"黄色"},{"name":"杭州","code":"571","mm":"今0 明8","level":"黄色"},{"name":"合肥","code":"551","mm":"今0 明5","level":"黄色"}];
