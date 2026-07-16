@@ -46,8 +46,8 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
   <h1>未来24小时降雨预警</h1>
   <span class="time" id="ht"></span>
 </div>
-<div class="wrap" id="app">
-  <div class="map-wrap" id="mapWrap">
+<div class="wrap">
+  <div class="map-wrap">
     <svg viewBox="0 0 400 224" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -153,6 +153,7 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
       </g>
     </svg>
   </div>
+  <div id="app"></div>
 </div>
 <div class="footer">数据来源：中央气象台 | 全国降雨模型预测系统</div>
 <script>
