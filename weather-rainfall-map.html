@@ -67,7 +67,7 @@
   .footer { font-size: 10px; color: #334155; text-align: center; flex-shrink: 0; padding-top: 8px; margin-top: 8px; border-top: 1px solid rgba(100,116,139,0.08); letter-spacing: 1px; }
   @media(max-width:768px){
     .dashboard{grid-template-columns:1fr;gap:10px;padding:8px;height:auto;min-height:calc(100vh - 56px);}
-    .map-section{grid-column:1;grid-row:1;height:300px;}
+    .map-section{grid-column:1;grid-row:1;height:380px;}
     .left-panel{grid-column:1;grid-row:2;overflow-y:auto;}
     .right-panel{grid-column:1;grid-row:3;overflow-y:auto;}
     .map-overlay{display:none;}
@@ -222,6 +222,7 @@ function renderMap(){
       }]
     });
     window.addEventListener('resize',function(){chart.resize();});
+    setTimeout(function(){chart.resize();},200);
   }).catch(function(e){
     console.error('地图GeoJSON加载失败:',e);
     document.getElementById('mapOverlay').innerHTML='<h3 style="color:#ef4444">地图加载失败</h3><div class="stat" style="color:#94a3b8">'+e.message+'</div>';
