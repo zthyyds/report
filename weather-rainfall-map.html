@@ -65,6 +65,26 @@
   .bar-row .b-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
   .bar-row .b-mm { font-size: 11px; font-weight: 700; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
   .footer { font-size: 10px; color: #334155; text-align: center; flex-shrink: 0; padding-top: 8px; margin-top: 8px; border-top: 1px solid rgba(100,116,139,0.08); letter-spacing: 1px; }
+  @media(max-width:768px){
+    .dashboard{grid-template-columns:1fr;gap:10px;padding:8px;height:auto;min-height:calc(100vh - 56px);}
+    .map-section{grid-column:1;grid-row:1;height:300px;}
+    .left-panel{grid-column:1;grid-row:2;overflow-y:auto;}
+    .right-panel{grid-column:1;grid-row:3;overflow-y:auto;}
+    .map-overlay{display:none;}
+    .stat-grid{grid-template-columns:repeat(4,1fr);gap:6px;}
+    .stat-box{padding:8px 4px;}
+    .stat-box .num{font-size:22px;}
+    .panel-title{font-size:13px;}
+    .city-row{padding:4px 6px;}
+    .city-row .c-name{font-size:11px;min-width:36px;}
+    .city-row .c-code{font-size:9px;min-width:24px;}
+    .city-row .c-mm{font-size:10px;min-width:56px;}
+    .bar-row .b-name{font-size:11px;min-width:36px;}
+    .bar-row .b-code{display:none;}
+    .bar-row .b-mm{font-size:10px;min-width:48px;}
+    .alert-row .a-text{font-size:11px;}
+    .alert-row .a-label{font-size:10px;}
+  }
 </style>
 </head>
 <body>
