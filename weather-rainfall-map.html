@@ -106,6 +106,8 @@ function buildLeftPanel(){
   h+='</div>';
   h+='<div class="panel-title"><span class="icon"></span>重点关注</div><div class="alert-list">';
   if(rc) h+='<div class="alert-row red"><span class="a-dot"></span><span class="a-label">红色</span><span class="a-text"><b>'+rc+'城</b> '+cityData.filter(function(c){return c.level==='红色'}).map(function(c){return c.name}).join('、')+' 暴雨</span></div>';
+  if(oc) h+='<div class="alert-row orange"><span class="a-dot"></span><span class="a-label">橙色</span><span class="a-text"><b>'+oc+'城</b> '+cityData.filter(function(c){return c.level==='橙色'}).map(function(c){return c.name}).join('、')+' 大雨</span></div>';
+  if(yc) h+='<div class="alert-row yellow"><span class="a-dot"></span><span class="a-label">黄色</span><span class="a-text"><b>'+yc+'城</b> '+cityData.filter(function(c){return c.level==='黄色'}).map(function(c){return c.name}).join('、')+' 中雨</span></div>';
   h+='</div>';
   h+='<div class="panel-title"><span class="icon"></span>城市降雨量</div><div class="city-list">';
   var sorted=cityData.slice().sort(function(a,b){
@@ -158,7 +160,9 @@ function renderMap(){
     var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
     var yc=cityData.filter(function(c){return c.level==='黄色'}).length;
     document.getElementById('mapOverlay').innerHTML='<h3>重点关注</h3>'
-      +'<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>';
+      +'<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>'
+      +'<div class="stat"><span class="dot" style="background:#f97316"></span>橙色 '+oc+'城</div>'
+      +'<div class="stat"><span class="dot" style="background:#eab308"></span>黄色 '+yc+'城</div>';
     chart.setOption({
       tooltip:{
         trigger:'item',
@@ -185,14 +189,14 @@ function renderMap(){
         name:'城市',type:'scatter',coordinateSystem:'geo',
         data:cityData.map(function(c){return{name:c.name,value:c.value,code:c.code,rain:c.rain,mm:c.mm,level:c.level};}),
         symbolSize:18,itemStyle:{color:'#fca5a5',shadowBlur:10,shadowColor:'rgba(252,165,165,0.5)'},
-        label:{show:true,formatter:function(p){return p.data.code;},position:'bottom',color:'#94a3b8',fontSize:10,fontWeight:600},
+        label:{show:true,formatter:function(p){return p.name;},position:'bottom',color:'#94a3b8',fontSize:10,fontWeight:600},
         emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}}
       },{
         name:'城市',type:'effectScatter',coordinateSystem:'geo',
         data:cityData.map(function(c){return{name:c.name,value:c.value,code:c.code,rain:c.rain,mm:c.mm,level:c.level};}).filter(function(d){return d.value[2]>=2;}),
         symbolSize:20,showEffectOn:'render',rippleEffect:{brushType:'stroke',scale:3},
         itemStyle:{color:'#f97316',shadowBlur:10,shadowColor:'rgba(249,115,22,0.5)'},
-        label:{show:true,formatter:function(p){return p.data.code;},position:'bottom',color:'#fdba74',fontSize:10,fontWeight:700},
+        label:{show:true,formatter:function(p){return p.name;},position:'bottom',color:'#fdba74',fontSize:10,fontWeight:700},
         emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}},
         zlevel:1
       }]
