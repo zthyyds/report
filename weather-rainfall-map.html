@@ -102,8 +102,8 @@
 </div>
 <script>
 var cityData = [{"name":"广州","value":[113.26,23.13,3],"code":"020","rain":"暴雨","mm":"今20 明80","wind":"偏南风5~6级","temp":"--","level":"红色"},{"name":"深圳","value":[114.07,22.62,3],"code":"755","rain":"暴雨","mm":"今30 明60","wind":"偏南风5~6级","temp":"--","level":"红色"},{"name":"西安","value":[108.94,34.26,3],"code":"029","rain":"暴雨","mm":"今50 明40","wind":"偏北风4~5级","temp":"--","level":"红色"},{"name":"重庆","value":[106.55,29.57,2],"code":"023","rain":"大雨","mm":"今10 明30","wind":"偏南风3~4级","temp":"38~39","level":"橙色"},{"name":"成都","value":[104.07,30.67,2],"code":"028","rain":"大雨","mm":"今15 明25","wind":"微风","temp":"35~36","level":"橙色"},{"name":"南宁","value":[108.37,22.82,2],"code":"771","rain":"大雨","mm":"今20 明20","wind":"偏南风4~5级","temp":"--","level":"橙色"},{"name":"北京","value":[116.4,39.9,1],"code":"010","rain":"中雨","mm":"今5 明15","wind":"偏南风2~3级","temp":"36~37","level":"黄色"},{"name":"淮安","value":[119.02,33.6,1],"code":"517","rain":"中雨","mm":"今5 明10","wind":"偏东风3~4级","temp":"--","level":"黄色"}];
+var levelMap = {'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308'};
 console.log('cityData loaded:', cityData.length, 'cities');
-console.log('levelMap:', JSON.stringify(levelMap));
 
 function updateTime(){
   var now=new Date();
