@@ -104,10 +104,8 @@ function buildLeftPanel(){
   h+='<div class="stat-box yellow"><div class="num">'+yc+'</div><div class="label">黄色预警</div></div>';
   h+='<div class="stat-box blue"><div class="num">'+tc+'</div><div class="label">影响城市</div></div>';
   h+='</div>';
-  h+='<div class="panel-title"><span class="icon"></span>预警信息</div><div class="alert-list">';
+  h+='<div class="panel-title"><span class="icon"></span>重点关注</div><div class="alert-list">';
   if(rc) h+='<div class="alert-row red"><span class="a-dot"></span><span class="a-label">红色</span><span class="a-text"><b>'+rc+'城</b> '+cityData.filter(function(c){return c.level==='红色'}).map(function(c){return c.name}).join('、')+' 暴雨</span></div>';
-  if(oc) h+='<div class="alert-row orange"><span class="a-dot"></span><span class="a-label">橙色</span><span class="a-text"><b>'+oc+'城</b> '+cityData.filter(function(c){return c.level==='橙色'}).map(function(c){return c.name}).join('、')+' 大雨</span></div>';
-  if(yc) h+='<div class="alert-row yellow"><span class="a-dot"></span><span class="a-label">黄色</span><span class="a-text"><b>'+yc+'城</b> '+cityData.filter(function(c){return c.level==='黄色'}).map(function(c){return c.name}).join('、')+' 中雨</span></div>';
   h+='</div>';
   h+='<div class="panel-title"><span class="icon"></span>城市降雨量</div><div class="city-list">';
   var sorted=cityData.slice().sort(function(a,b){
@@ -153,10 +151,8 @@ function renderMap(){
     var rc=cityData.filter(function(c){return c.level==='红色'}).length;
     var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
     var yc=cityData.filter(function(c){return c.level==='黄色'}).length;
-    document.getElementById('mapOverlay').innerHTML='<h3>预警统计</h3>'
-      +'<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>'
-      +'<div class="stat"><span class="dot" style="background:#f97316"></span>橙色 '+oc+'城</div>'
-      +'<div class="stat"><span class="dot" style="background:#eab308"></span>黄色 '+yc+'城</div>';
+    document.getElementById('mapOverlay').innerHTML='<h3>重点关注</h3>'
+      +'<div class="stat"><span class="dot" style="background:#ef4444"></span>红色 '+rc+'城</div>';
     chart.setOption({
       tooltip:{
         trigger:'item',
