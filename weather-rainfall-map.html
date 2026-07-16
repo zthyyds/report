@@ -160,8 +160,8 @@ function buildRightPanel(){
   document.getElementById('rightPanel').innerHTML=h;
 }
 
-var chinaGeoUrl='https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/3e82fb4a-80f1-11f1-b9a4-02020ae60917.geojson';
-var chinaGeoUrlFallback='./china.geojson';
+var chinaGeoUrl='./china.geojson';
+var chinaGeoUrlFallback='https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/3e82fb4a-80f1-11f1-b9a4-02020ae60917.geojson';
 
 function loadGeoJSON(url){
   return fetch(url,{mode:'cors'}).then(function(r){
