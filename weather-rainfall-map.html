@@ -138,14 +138,20 @@ function buildRightPanel(){
   document.getElementById('rightPanel').innerHTML=h;
 }
 
-var chinaGeoUrl='./china.geojson';
+var chinaGeoUrl='https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/3e82fb4a-80f1-11f1-b9a4-02020ae60917.geojson';
+var chinaGeoUrlFallback='./china.geojson';
 
+function loadGeoJSON(url){
+  return fetch(url,{mode:'cors'}).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  });
+}
 function renderMap(){
   var el=document.getElementById('map');
   var chart=echarts.init(el,null,{renderer:'canvas'});
-  fetch(chinaGeoUrl,{mode:'cors'}).then(function(r){
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    return r.json();
+  loadGeoJSON(chinaGeoUrl).catch(function(){
+    return loadGeoJSON(chinaGeoUrlFallback);
   }).then(function(geo){
     echarts.registerMap('china',geo);
     var rc=cityData.filter(function(c){return c.level==='红色'}).length;
