@@ -11,7 +11,7 @@
   .header { height: 56px; background: linear-gradient(90deg,#0a0f1e 0%,#111827 50%,#0a0f1e 100%); border-bottom: 1px solid rgba(100,116,139,0.15); display: flex; align-items: center; justify-content: center; padding: 0 32px; flex-shrink: 0; position: relative; }
   .header h1 { font-size: 18px; font-weight: 800; color: #f1f5f9; letter-spacing: 2px; }
   .header .time { color: #64748b; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; position: absolute; right: 32px; }
-  .dashboard { display: grid; grid-template-columns: 960px 1fr 840px; gap: 16px; padding: 16px; height: calc(100vh - 56px); }
+  .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; height: calc(100vh - 56px); }
   .map-section { grid-column: 1 / -1; grid-row: 1; position: relative; background: #0d1321; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; overflow: hidden; height: 350px; }
   #map { width: 100%; height: 100%; }
   .map-overlay { position: absolute; top: 12px; left: 12px; z-index: 10; background: rgba(17,24,39,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(100,116,139,0.15); border-radius: 10px; padding: 12px 16px; }
@@ -19,7 +19,7 @@
   .map-overlay .stat { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 12px; color: #cbd5e1; font-weight: 500; }
   .map-overlay .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .left-panel { grid-column: 1; grid-row: 2; background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
-  .right-panel { grid-column: 3; grid-row: 2; background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
+  .right-panel { grid-column: 2; grid-row: 2; background: #111827; border: 1px solid rgba(100,116,139,0.12); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
   .panel-title { font-size: 14px; font-weight: 700; color: #93c5fd; display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid rgba(100,116,139,0.1); letter-spacing: 0.5px; }
   .panel-title .icon { width: 3px; height: 14px; border-radius: 2px; background: #3b82f6; flex-shrink: 0; }
   .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; flex-shrink: 0; margin-bottom: 12px; }
@@ -140,7 +140,7 @@ function buildRightPanel(){
   document.getElementById('rightPanel').innerHTML=h;
 }
 
-var chinaGeoUrl='https://ai.sf-express.com/mcp-oss-proxy/v1/AUTH_mcp-square-INC-AIPLAT-CORE/temp-file/48e18761-7e7e-11f1-b9a4-02020ae60917.json';
+var chinaGeoUrl='https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json';
 
 function renderMap(){
   var el=document.getElementById('map');
@@ -178,14 +178,16 @@ function renderMap(){
       },
       series:[{
         name:'城市',type:'scatter',coordinateSystem:'geo',
-        data:cityData.map(function(c){return{name:c.name,value:c.value};}),
-        symbolSize:20,itemStyle:{color:'#fca5a5',shadowBlur:10,shadowColor:'rgba(252,165,165,0.5)'},
+        data:cityData.map(function(c){return{name:c.name,value:c.value,code:c.code,rain:c.rain,mm:c.mm,level:c.level};}),
+        symbolSize:18,itemStyle:{color:'#fca5a5',shadowBlur:10,shadowColor:'rgba(252,165,165,0.5)'},
+        label:{show:true,formatter:function(p){return p.data.code;},position:'bottom',color:'#94a3b8',fontSize:10,fontWeight:600},
         emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}}
       },{
         name:'城市',type:'effectScatter',coordinateSystem:'geo',
-        data:cityData.map(function(c){return{name:c.name,value:c.value};}).filter(function(d){return d.value[2]>=2;}),
-        symbolSize:22,showEffectOn:'render',rippleEffect:{brushType:'stroke',scale:3},
+        data:cityData.map(function(c){return{name:c.name,value:c.value,code:c.code,rain:c.rain,mm:c.mm,level:c.level};}).filter(function(d){return d.value[2]>=2;}),
+        symbolSize:20,showEffectOn:'render',rippleEffect:{brushType:'stroke',scale:3},
         itemStyle:{color:'#f97316',shadowBlur:10,shadowColor:'rgba(249,115,22,0.5)'},
+        label:{show:true,formatter:function(p){return p.data.code;},position:'bottom',color:'#fdba74',fontSize:10,fontWeight:700},
         emphasis:{itemStyle:{color:'#fff',shadowBlur:20,shadowColor:'rgba(255,255,255,0.8)'},label:{show:true,formatter:'{b}',color:'#fff',fontSize:14,fontWeight:700}},
         zlevel:1
       }]
