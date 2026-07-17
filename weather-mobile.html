@@ -44,7 +44,7 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
 <body>
 <div class="header">
   <h1>未来24小时降雨预警</h1>
-  <span class="time" id="ht">2026-07-17 14:59</span>
+  <span class="time" id="ht">2026-07-17 15:13</span>
 </div>
 <div class="wrap">
   <div class="map-wrap">
@@ -442,7 +442,7 @@ body{font-family:-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;backgr
 </div>
 <div class="footer">数据来源：异常天气MCP · 实时查询</div>
 <script>
-var cityData=[{"name":"南京","code":"025","mm":"38~39","level":"红色"},{"name":"杭州","code":"0571","mm":"37~38","level":"红色"},{"name":"武汉","code":"027","mm":"70~100","level":"红色"},{"name":"重庆","code":"023","mm":"60~100","level":"红色"},{"name":"广州","code":"020","mm":"50~80","level":"红色"},{"name":"贵阳","code":"0851","mm":"60~100","level":"红色"},{"name":"青岛","code":"0532","mm":"--","level":"红色"},{"name":"天津","code":"022","mm":"--","level":"红色"},{"name":"昆明","code":"0871","mm":"30~50","level":"橙色"},{"name":"深圳","code":"0755","mm":"20~30","level":"黄色"},{"name":"济南","code":"0531","mm":"--","level":"黄色"}];
+var cityData=[{"name":"武汉","code":"027","mm":"70~100","level":"红色"},{"name":"重庆","code":"023","mm":"60~100","level":"红色"},{"name":"广州","code":"020","mm":"50~80","level":"红色"},{"name":"贵阳","code":"0851","mm":"60~100","level":"红色"},{"name":"青岛","code":"0532","mm":"--","level":"红色"},{"name":"天津","code":"022","mm":"--","level":"红色"},{"name":"南京","code":"025","mm":"--","level":"红色"},{"name":"杭州","code":"0571","mm":"--","level":"红色"},{"name":"昆明","code":"0871","mm":"30~50","level":"橙色"},{"name":"深圳","code":"0755","mm":"20~30","level":"黄色"},{"name":"济南","code":"0531","mm":"--","level":"黄色"}];
 var levelMap={'红色':'#ef4444','橙色':'#f97316','黄色':'#eab308'};
 var rc=cityData.filter(function(c){return c.level==='红色'}).length;
 var oc=cityData.filter(function(c){return c.level==='橙色'}).length;
