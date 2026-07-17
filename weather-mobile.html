@@ -473,6 +473,21 @@ var pct=Math.max(8,(mm/maxMm*100));
 html+='<div class="city"><span class="cn">'+c.name+'</span><div class="bar"><div class="bf" style="width:'+pct+'%;background:'+levelMap[c.level]+'"></div></div><span class="mm" style="color:'+levelMap[c.level]+'">'+c.mm+' mm</span></div>';
 });
 html+='</div>';
+html+='<div class="card"><div class="card-title"><i></i>航空注意事项</div>';
+html+='<div style="font-size:11px;color:#94a3b8;line-height:1.7">';
+html+='①防水第一：出港航空线路必须做好防水措施，防止快件湿损<br>';
+html+='②工具升级：巴枪更新至最新版本，提前设置散航建包计划<br>';
+html+='③小件打包：用防水编织袋建包，生鲜件可以合包<br>';
+html+='④单件处理：无法建包就用缠绕膜加固，3-20KG建包，&gt;20KG四面缠膜<br>';
+html+='⑤特殊货物：生鲜类和酒类的建包缠膜（不取数）<br>';
+html+='</div></div>';
+html+='<div class="card"><div class="card-title"><i></i>陆运注意事项</div>';
+html+='<div style="font-size:11px;color:#94a3b8;line-height:1.7">';
+html+='①装车准备：装车前检查车厢密度，铺覆稻草垫底，确保车厢干燥无积水隐患<br>';
+html+='②漏水检查：检查车厢门缝、接缝、顶部是否漏水，发现漏点立即上报<br>';
+html+='③货物加固：扁平件缠膜加固，高价值货物防水袋打包<br>';
+html+='④雨膜覆盖：装车后用防水雨膜彻底覆盖车厢顶部尾部和四周<br>';
+html+='</div></div>';
 document.getElementById('app').innerHTML=html;
 </script>
 </body>
