@@ -286,6 +286,27 @@ tbody tr:nth-child(even):hover { background: #e8f0fe; }
   .query-count-section { padding: 16px; }
 }
 </style>
+
+<style>
+:root {
+  --main-color: #0C4A6E;
+  --accent-color: #38BDF8;
+  --bg-color: #E0F2FE;
+}
+.header { background: #0C4A6E; }
+.search-bar label { background: #0C4A6E; }
+.search-bar button { background: #0C4A6E; border-color: #0C4A6E; }
+.search-bar button:hover { background: #38BDF8; border-color: #38BDF8; }
+table thead th { background: #0C4A6E; }
+.stat-card { border-color: #0C4A6E; }
+.stat-card .stat-value { color: #38BDF8; }
+.result-info::before { background: #38BDF8; }
+.count-tag { border-color: #0C4A6E; }
+.count-tag .count-num { background: #38BDF8; }
+.geo-line { background: repeating-linear-gradient(90deg, #0C4A6E 0px, #0C4A6E 12px, transparent 12px, transparent 20px); }
+tbody tr:hover { background: #E0F2FE; }
+.search-bar input:focus { background: #E0F2FE; border-color: #38BDF8; }
+</style>
 </head>
 <body>
 <div class="header">
@@ -440,6 +461,7 @@ document.getElementById("searchInput").addEventListener("keydown", function(e) {
   var q = params.get("q");
   if (q) { document.getElementById("searchInput").value = q; doSearch(); }
 })();
+document.querySelector(".footer").textContent = "网点派仓班次查询系统 | 风格 #95/114";
 </script>
 </body>
 </html>
