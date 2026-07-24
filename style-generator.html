@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计风格灵感生成器</title>
+<style>
+:root {
+  --main-color: #1a1a1a;
+  --bg-color: #f9f9f9;
+  --accent: #2563eb;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "SF Pro Display", -apple-system, "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  background: var(--bg-color);
+  color: var(--main-color);
+  min-height: 100vh;
+  transition: all 0.6s ease;
+}
+
+/* Header */
+.header {
+  background: var(--main-color);
+  color: #fff;
+  padding: 40px 24px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border: 3px solid rgba(255,255,255,0.12);
+  transform: rotate(45deg);
+}
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -40px; left: 30px;
+  width: 100px; height: 100px;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.header h1 {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+.header .subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Style showcase */
+.showcase {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.style-card {
+  border: 3px solid var(--main-color);
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: all 0.6s ease;
+}
+.style-card-header {
+  padding: 32px 24px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+.style-card-header::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.15;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255,255,255,0.1) 10px,
+    rgba(255,255,255,0.1) 20px
+  );
+}
+.style-card-header h2 {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.style-card-header .category-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  font-size: 12px;
+  margin-top: 12px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+.style-card-body {
+  padding: 24px;
+  background: #fff;
+}
+.style-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.info-item {
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+}
+.info-label {
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.info-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+.color-swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.swatch {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+/* All styles list */
+.all-styles-section {
+  padding: 0 24px 32px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.all-styles-section h3 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-left: 4px;
+}
+.category-group {
+  margin-bottom: 20px;
+}
+.category-title {
+  font-size: 12px;
+  color: #999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+.style-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.style-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1.5px solid #e0e0e0;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: 0;
+}
+.style-tag:hover {
+  border-color: var(--main-color);
+  background: var(--main-color);
+  color: #fff;
+}
+.style-tag.active {
+  background: var(--main-color);
+  color: #fff;
+  border-color: var(--main-color);
+}
+
+/* CTA Button */
+.cta-section {
+  text-align: center;
+  padding: 24px;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: var(--main-color);
+  color: #fff;
+  border: 2px solid var(--main-color);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: 0;
+}
+.cta-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Geo line */
+.geo-line {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--main-color) 0px,
+    var(--main-color) 12px,
+    transparent 12px,
+    transparent 20px
+  );
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 11px;
+  color: #ccc;
+  letter-spacing: 1px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .header { padding: 28px 16px 24px; }
+  .showcase { padding: 20px 16px; }
+  .style-card-header { padding: 24px 16px; }
+  .style-card-body { padding: 16px; }
+  .style-info { grid-template-columns: 1fr; }
+  .all-styles-section { padding: 0 16px 24px; }
+  .cta-btn { padding: 12px 32px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>设计风格灵感生成器</h1>
+  <div class="subtitle">110种风格，每次随机一种，激发你的创意灵感</div>
+</div>
+<div class="geo-line"></div>
+
+<div class="showcase">
+  <div class="style-card">
+    <div class="style-card-header" id="cardHeader">
+      <h2 id="styleName"></h2>
+      <span class="category-tag" id="categoryTag"></span>
+    </div>
+    <div class="style-card-body">
+      <div class="style-info">
+        <div class="info-item">
+          <div class="info-label">所属类别</div>
+          <div class="info-value" id="infoCategory"></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">风格编号</div>
+          <div class="info-value" id="infoNumber"></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">主色调</div>
+          <div class="color-swatches" id="colorSwatch1"></div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">强调色</div>
+          <div class="color-swatches" id="colorSwatch2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <button class="cta-btn" id="refreshBtn" onclick="randomStyle()">换一种风格</button>
+</div>
+<div class="geo-line"></div>
+
+<div class="all-styles-section">
+  <h3>全部 110 种风格</h3>
+  <div id="allStylesList"></div>
+</div>
+<div class="geo-line"></div>
+<div class="footer">设计风格灵感生成器 -- 修改建议联系：ZTH【禁止外传】</div>
+
+<script>
+var STYLES = [{"name":"扁平化设计风格","category":"经典基础","color":"#4A90D9","bg":"#EBF5FF","accent":"#2563EB"},{"name":"拟物化设计风格","category":"经典基础","color":"#8B6914","bg":"#FFF8E1","accent":"#F59E0B"},{"name":"材质设计（Material Design）风格","category":"经典基础","color":"#7C4DFF","bg":"#EDE7F6","accent":"#7C4DFF"},{"name":"极简主义风格","category":"经典基础","color":"#333333","bg":"#FAFAFA","accent":"#666666"},{"name":"暗黑模式风格","category":"经典基础","color":"#00FF88","bg":"#0D0D0D","accent":"#00FF88"},{"name":"玻璃拟态（Glassmorphism）风格","category":"经典基础","color":"#6366F1","bg":"linear-gradient(135deg,#667eea,#764ba2)","accent":"#6366F1"},{"name":"粘土拟态（Claymorphism）风格","category":"经典基础","color":"#F472B6","bg":"#FFF1F2","accent":"#EC4899"},{"name":"新拟物化（Neumorphism）风格","category":"经典基础","color":"#78716C","bg":"#E8E4DF","accent":"#A8A29E"},{"name":"微交互细节风格","category":"经典基础","color":"#06B6D4","bg":"#ECFEFF","accent":"#06B6D4"},{"name":"响应式自适应风格","category":"经典基础","color":"#10B981","bg":"#ECFDF5","accent":"#10B981"},{"name":"无障碍友好风格","category":"经典基础","color":"#F59E0B","bg":"#FFFBEB","accent":"#F59E0B"},{"name":"动态AI适配风格","category":"经典基础","color":"#8B5CF6","bg":"#F5F3FF","accent":"#8B5CF6"},{"name":"低多边形（Low Poly）风格","category":"经典基础","color":"#EF4444","bg":"#FEF2F2","accent":"#EF4444"},{"name":"手绘涂鸦风格","category":"经典基础","color":"#F97316","bg":"#FFF7ED","accent":"#F97316"},{"name":"矢量插画主导风格","category":"经典基础","color":"#D946EF","bg":"#FAF5FF","accent":"#D946EF"},{"name":"蓝白科技企业官网风格","category":"行业专属","color":"#1D4ED8","bg":"#EFF6FF","accent":"#3B82F6"},{"name":"女性柔美美妆服饰风格","category":"行业专属","color":"#DB2777","bg":"#FFF1F5","accent":"#EC4899"},{"name":"黑金高端奢侈品风格","category":"行业专属","color":"#D4A574","bg":"#0A0A0A","accent":"#D4A574"},{"name":"中国风传统文化风格","category":"行业专属","color":"#C41E3A","bg":"#FFF5F5","accent":"#C41E3A"},{"name":"欧美大色块时尚风格","category":"行业专属","color":"#FF6B35","bg":"#FFF7ED","accent":"#FF6B35"},{"name":"日韩小清新生活风格","category":"行业专属","color":"#6EE7B7","bg":"#F0FDF9","accent":"#10B981"},{"name":"北欧性冷淡极简风格","category":"行业专属","color":"#78716C","bg":"#FAFAF9","accent":"#A8A29E"},{"name":"彩虹炫彩潮流风格","category":"行业专属","color":"#FF0080","bg":"linear-gradient(135deg,#FF0080,#FF8C00,#40E0D0)","accent":"#FF0080"},{"name":"医疗健康简约信任风格","category":"行业专属","color":"#0284C7","bg":"#F0F9FF","accent":"#0284C7"},{"name":"运动鞋潮酷暗黑极光风格","category":"行业专属","color":"#00FF88","bg":"#0A0A0A","accent":"#00FF88"},{"name":"美食暖系食欲风格","category":"行业专属","color":"#DC2626","bg":"#FEF2F2","accent":"#F97316"},{"name":"珠宝香槟金轻奢风格","category":"行业专属","color":"#C9A96E","bg":"#1A1A1A","accent":"#C9A96E"},{"name":"NFT酸性镭射风格","category":"行业专属","color":"#FF00FF","bg":"#0D0D0D","accent":"#FF00FF"},{"name":"音乐流紫粉沉浸风格","category":"行业专属","color":"#A855F7","bg":"linear-gradient(135deg,#A855F7,#EC4899)","accent":"#A855F7"},{"name":"商务企业扁平化风格","category":"行业专属","color":"#1E40AF","bg":"#F8FAFC","accent":"#3B82F6"},{"name":"艺术工作室创意风格","category":"行业专属","color":"#9333EA","bg":"#FAF5FF","accent":"#9333EA"},{"name":"科幻未来次元风格","category":"行业专属","color":"#00D4FF","bg":"#0A0A2E","accent":"#00D4FF"},{"name":"怀旧复古年代风格","category":"行业专属","color":"#B45309","bg":"#FEF3C7","accent":"#B45309"},{"name":"文艺慢生活风格","category":"行业专属","color":"#78716C","bg":"#FAFAF9","accent":"#A8A29E"},{"name":"电商商品聚焦风格","category":"行业专属","color":"#FF4D4F","bg":"#FFFFFF","accent":"#FF4D4F"},{"name":"运动潮牌暗黑风格","category":"行业专属","color":"#FFFFFF","bg":"#111111","accent":"#FFFFFF"},{"name":"餐饮暖色调风格","category":"行业专属","color":"#EA580C","bg":"#FFF7ED","accent":"#F97316"},{"name":"教育平台清新风格","category":"行业专属","color":"#059669","bg":"#ECFDF5","accent":"#10B981"},{"name":"金融专业稳重风格","category":"行业专属","color":"#1E3A5F","bg":"#F8FAFC","accent":"#1E3A5F"},{"name":"旅游风景沉浸式风格","category":"行业专属","color":"#0EA5E9","bg":"#F0F9FF","accent":"#0EA5E9"},{"name":"婚庆浪漫柔焦风格","category":"行业专属","color":"#E11D48","bg":"#FFF1F5","accent":"#FB7185"},{"name":"宠物可爱治愈风格","category":"行业专属","color":"#FB923C","bg":"#FFF7ED","accent":"#FB923C"},{"name":"汽车工业硬核风格","category":"行业专属","color":"#DC2626","bg":"#1A1A1A","accent":"#DC2626"},{"name":"地产高端大气风格","category":"行业专属","color":"#B8860B","bg":"#FAFAFA","accent":"#B8860B"},{"name":"游戏炫光动效风格","category":"行业专属","color":"#7C3AED","bg":"#0F0A1E","accent":"#7C3AED"},{"name":"政府政务严谨风格","category":"行业专属","color":"#1E40AF","bg":"#F8FAFC","accent":"#1E40AF"},{"name":"公益项目温暖风格","category":"行业专属","color":"#EA580C","bg":"#FFF7ED","accent":"#EA580C"},{"name":"儿童产品童趣风格","category":"行业专属","color":"#F43F5E","bg":"#FFF1F5","accent":"#F43F5E"},{"name":"健身力量感风格","category":"行业专属","color":"#EF4444","bg":"#1A1A1A","accent":"#EF4444"},{"name":"数码科技极客风格","category":"行业专属","color":"#22D3EE","bg":"#0C0C0C","accent":"#22D3EE"},{"name":"农业自然田园风格","category":"行业专属","color":"#16A34A","bg":"#F0FDF4","accent":"#16A34A"},{"name":"航空航天未来风格","category":"行业专属","color":"#38BDF8","bg":"#0F172A","accent":"#38BDF8"},{"name":"法律专业严谨风格","category":"行业专属","color":"#1E3A5F","bg":"#F8FAFC","accent":"#1E3A5F"},{"name":"建筑设计几何风格","category":"行业专属","color":"#1A1A1A","bg":"#FFFFFF","accent":"#1A1A1A"},{"name":"摄影作品展示风格","category":"行业专属","color":"#FFFFFF","bg":"#000000","accent":"#FFFFFF"},{"name":"Y2K千禧复古风","category":"潮流创意","color":"#FF69B4","bg":"linear-gradient(135deg,#FF69B4,#00CED1)","accent":"#FF69B4"},{"name":"90年代复古网页风","category":"潮流创意","color":"#FF00FF","bg":"#000080","accent":"#00FF00"},{"name":"美式复古画报风","category":"潮流创意","color":"#C41E3A","bg":"#FDF5E6","accent":"#C41E3A"},{"name":"酸性设计先锋风","category":"潮流创意","color":"#00FF00","bg":"#000000","accent":"#00FF00"},{"name":"孟菲斯几何撞色风","category":"潮流创意","color":"#FF4D4D","bg":"#FFFFFF","accent":"#4ECDC4"},{"name":"新丑风错位排版风","category":"潮流创意","color":"#FF0000","bg":"#FFFF00","accent":"#0000FF"},{"name":"赛博朋克霓虹风","category":"潮流创意","color":"#FF00FF","bg":"#0D0221","accent":"#00FFFF"},{"name":"日式侘寂质朴风","category":"潮流创意","color":"#8B7355","bg":"#F5F0EB","accent":"#8B7355"},{"name":"蒸汽波迷幻复古风","category":"潮流创意","color":"#FF77FF","bg":"linear-gradient(135deg,#FF77FF,#4400FF)","accent":"#FF77FF"},{"name":"毛毡黏土童趣风","category":"潮流创意","color":"#FF9A8B","bg":"#FFF5F0","accent":"#FF9A8B"},{"name":"图与线叠加层叠风","category":"潮流创意","color":"#333333","bg":"#F5F5F5","accent":"#666666"},{"name":"纯文字图形化版式风","category":"潮流创意","color":"#000000","bg":"#FFFFFF","accent":"#000000"},{"name":"图文混合大胆排版风","category":"潮流创意","color":"#FF6B6B","bg":"#FFFFFF","accent":"#FF6B6B"},{"name":"圆形版式亲和力风","category":"潮流创意","color":"#4CAF50","bg":"#F1F8E9","accent":"#4CAF50"},{"name":"文字轮廓化轻量化风","category":"潮流创意","color":"#999999","bg":"#FFFFFF","accent":"#333333"},{"name":"玻璃质感通透风","category":"潮流创意","color":"#6366F1","bg":"linear-gradient(135deg,#667eea,#764ba2)","accent":"#6366F1"},{"name":"线条装饰信息区分风","category":"潮流创意","color":"#333333","bg":"#FAFAFA","accent":"#666666"},{"name":"3D立体沉浸风","category":"潮流创意","color":"#8B5CF6","bg":"#0F0A1E","accent":"#8B5CF6"},{"name":"霓虹渐变梦幻风","category":"潮流创意","color":"#FF0080","bg":"#000000","accent":"#FF0080"},{"name":"故障艺术（Glitch）风","category":"潮流创意","color":"#FF0000","bg":"#000000","accent":"#0000FF"},{"name":"像素艺术复古风","category":"潮流创意","color":"#00FF00","bg":"#000000","accent":"#00FF00"},{"name":"拼贴艺术混搭风","category":"潮流创意","color":"#FF6347","bg":"#FFF8DC","accent":"#FF6347"},{"name":"波普艺术撞色风","category":"潮流创意","color":"#FF0000","bg":"#FFFF00","accent":"#0000FF"},{"name":"超扁平（Superflat）日系风","category":"潮流创意","color":"#FF69B4","bg":"#FFFFFF","accent":"#FF69B4"},{"name":"野兽派粗狂排版风","category":"潮流创意","color":"#000000","bg":"#FFFFFF","accent":"#FF0000"},{"name":"瑞士国际主义极简风","category":"潮流创意","color":"#1A1A1A","bg":"#FFFFFF","accent":"#FF0000"},{"name":"包豪斯几何理性风","category":"潮流创意","color":"#1A1A1A","bg":"#FFFFFF","accent":"#FF6B35"},{"name":"欧普艺术视错觉风","category":"潮流创意","color":"#000000","bg":"#FFFFFF","accent":"#000000"},{"name":"达达主义反常规风","category":"潮流创意","color":"#FF0000","bg":"#000000","accent":"#FFFFFF"},{"name":"蒸汽朋克机械复古风","category":"潮流创意","color":"#8B6914","bg":"#2C1810","accent":"#CD853F"},{"name":"柴油朋克工业复古风","category":"潮流创意","color":"#808080","bg":"#2C2C2C","accent":"#A0522D"},{"name":"太阳能朋克自然未来风","category":"潮流创意","color":"#00FF88","bg":"#0A2E1A","accent":"#00FF88"},{"name":"生物朋克有机未来风","category":"潮流创意","color":"#32CD32","bg":"#0A1A0A","accent":"#32CD32"},{"name":"复古未来主义风","category":"潮流创意","color":"#FF8C00","bg":"#1A0A2E","accent":"#FF8C00"},{"name":"数字艺术抽象风","category":"潮流创意","color":"#8B00FF","bg":"#0A0A0A","accent":"#8B00FF"},{"name":"莫兰迪低饱和柔和风","category":"细分氛围","color":"#B5A8A0","bg":"#F5F0EB","accent":"#B5A8A0"},{"name":"马卡龙甜系清新风","category":"细分氛围","color":"#FFB6C1","bg":"#FFF0F5","accent":"#FFB6C1"},{"name":"赛博田园自然科技风","category":"细分氛围","color":"#00FF88","bg":"#F0FFF4","accent":"#00FF88"},{"name":"暗黑哥特神秘风","category":"细分氛围","color":"#8B0000","bg":"#0A0A0A","accent":"#8B0000"},{"name":"洛可可华丽精致风","category":"细分氛围","color":"#D4AF37","bg":"#FFF8DC","accent":"#D4AF37"},{"name":"波西米亚自由随性风","category":"细分氛围","color":"#CD853F","bg":"#FFF8F0","accent":"#CD853F"},{"name":"极简日式和风","category":"细分氛围","color":"#8B7355","bg":"#FAF5F0","accent":"#8B7355"},{"name":"美式西部荒野风","category":"细分氛围","color":"#8B4513","bg":"#F5DEB3","accent":"#8B4513"},{"name":"北欧自然原木风","category":"细分氛围","color":"#A0522D","bg":"#FAF0E6","accent":"#A0522D"},{"name":"地中海蓝白清新风","category":"细分氛围","color":"#1E90FF","bg":"#F0F8FF","accent":"#1E90FF"},{"name":"东南亚热带植物风","category":"细分氛围","color":"#228B22","bg":"#F0FFF0","accent":"#228B22"},{"name":"中东异域纹理风","category":"细分氛围","color":"#B8860B","bg":"#1A0A00","accent":"#B8860B"},{"name":"东欧粗狂工业风","category":"细分氛围","color":"#696969","bg":"#2C2C2C","accent":"#808080"},{"name":"港式复古霓虹风","category":"细分氛围","color":"#FF0080","bg":"#0A0A2E","accent":"#00FFFF"},{"name":"台式小清新文艺风","category":"细分氛围","color":"#98D8C8","bg":"#F0FFF8","accent":"#98D8C8"},{"name":"韩式甜系少女风","category":"细分氛围","color":"#FFB6C1","bg":"#FFF0F5","accent":"#FFB6C1"},{"name":"法式优雅浪漫风","category":"细分氛围","color":"#C41E3A","bg":"#FFF5F5","accent":"#C41E3A"},{"name":"英式复古绅士风","category":"细分氛围","color":"#2F4F4F","bg":"#F5F5F0","accent":"#2F4F4F"},{"name":"非洲原始部落纹理风","category":"细分氛围","color":"#8B4513","bg":"#F5DEB3","accent":"#8B4513"},{"name":"极地冰雪冷调风","category":"细分氛围","color":"#B0E0E6","bg":"#F0FFFF","accent":"#B0E0E6"}];
+
+var currentIndex = -1;
+
+function randomStyle() {
+  var newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * STYLES.length);
+  } while (newIndex === currentIndex && STYLES.length > 1);
+  currentIndex = newIndex;
+  showStyle(newIndex);
+}
+
+function showStyle(idx) {
+  var s = STYLES[idx];
+  document.getElementById('styleName').textContent = s.name;
+  document.getElementById('categoryTag').textContent = s.category;
+  document.getElementById('infoCategory').textContent = s.category;
+  document.getElementById('infoNumber').textContent = '#' + (idx + 1);
+
+  // Color swatches
+  var sw1 = document.getElementById('colorSwatch1');
+  var sw2 = document.getElementById('colorSwatch2');
+  sw1.innerHTML = '<div class="swatch" style="background:' + s.color + '"></div>';
+  sw2.innerHTML = '<div class="swatch" style="background:' + s.accent + '"></div>';
+
+  // Dynamic CSS variables
+  document.documentElement.style.setProperty('--main-color', s.color);
+  document.documentElement.style.setProperty('--accent', s.accent);
+
+  // Background handling
+  var bg = s.bg;
+  if (bg.indexOf('gradient') > -1) {
+    document.body.style.background = bg;
+  } else {
+    document.body.style.background = bg;
+  }
+
+  // Update header background
+  document.querySelector('.header').style.background = s.bg.indexOf('gradient') > -1 ? s.bg : s.color;
+
+  // Update active tag
+  var tags = document.querySelectorAll('.style-tag');
+  for (var i = 0; i < tags.length; i++) {
+    tags[i].classList.toggle('active', i === idx);
+  }
+
+  // Scroll to top smoothly
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function buildList() {
+  var container = document.getElementById('allStylesList');
+  var categories = ['经典基础', '行业专属', '潮流创意', '细分氛围'];
+  var html = '';
+  for (var c = 0; c < categories.length; c++) {
+    html += '<div class="category-group">';
+    html += '<div class="category-title">' + categories[c] + '</div>';
+    html += '<div class="style-grid">';
+    for (var i = 0; i < STYLES.length; i++) {
+      if (STYLES[i].category === categories[c]) {
+        html += '<span class="style-tag" onclick="showStyle(' + i + ')">' + STYLES[i].name + '</span>';
+      }
+    }
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+buildList();
+randomStyle();
+</script>
+</body>
+</html>
