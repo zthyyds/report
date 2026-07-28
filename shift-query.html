@@ -4,46 +4,84 @@
 <title>网点派仓班次查询</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f5f6fa;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
-.nav{background:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid #e8e8e8;position:sticky;top:0;z-index:10}
-.nav h1{font-size:17px;font-weight:600}
-.nav .tag{font-size:10px;color:#a0aec0}
-.card{margin:12px;background:linear-gradient(135deg,#4a6fc4,#5a85d4);border-radius:12px;padding:18px;color:#fff;position:relative;overflow:hidden}
-.card::after{content:"";position:absolute;top:-50%;right:-20%;width:200px;height:200px;background:rgba(255,255,255,0.06);border-radius:50%}
-.card .label{font-size:11px;background:rgba(255,255,255,0.2);display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:8px}
-.card .big-num{font-size:28px;font-weight:700}
-.card .desc{font-size:13px;opacity:0.9;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.2)}
-.search-box{margin:12px;background:#fff;border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:center}
-.search-box label{font-size:13px;font-weight:500;color:#333;white-space:nowrap}
-.search-box input{flex:1;border:1.5px solid #e5e5e5;border-radius:8px;padding:8px 12px;font-size:14px;outline:none}
-.search-box input:focus{border-color:#4a6fc4}
-.search-box button{background:#4a6fc4;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer}
-.timeline{padding:12px 12px 24px}
-.tl-item{display:flex;gap:14px;margin-bottom:16px;position:relative}
-.tl-line{position:relative;display:flex;flex-direction:column;align-items:center}
-.tl-dot{width:10px;height:10px;background:#4a6fc4;border-radius:50%;z-index:1;flex-shrink:0;margin-top:4px}
-.tl-conn{width:2px;flex:1;background:#e5e5e5;min-height:20px}
+body{background:#f0f2f7;font-family:-apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;min-height:100vh;color:#1a1a1a}
+
+/* 顶部导航 */
+.top-bar{background:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+.top-bar h1{font-size:17px;font-weight:600;color:#1a1a1a}
+
+/* 蓝色信息卡片 - 完全仿截图 */
+.info-card{margin:16px;background:linear-gradient(135deg,#3b6fd4 0%,#5a8ee0 100%);border-radius:12px;padding:20px;color:#fff;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(59,111,212,0.3)}
+.info-card::before{content:"";position:absolute;top:-40%;right:-10%;width:180px;height:180px;background:radial-gradient(ellipse,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%}
+.info-card .card-label{font-size:11px;background:rgba(255,255,255,0.2);display:inline-block;padding:2px 10px;border-radius:4px;margin-bottom:8px;letter-spacing:0.5px}
+.info-card .card-value{font-size:32px;font-weight:700;position:relative;z-index:1}
+.info-card .card-desc{font-size:13px;opacity:0.85;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.25);position:relative;z-index:1}
+
+/* 搜索框 */
+.search-box{margin:16px;background:#fff;border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.search-box label{font-size:13px;font-weight:500;color:#475569;white-space:nowrap}
+.search-box input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:14px;outline:none;color:#1a1a1a;background:#f8fafc}
+.search-box input:focus{border-color:#3b6fd4;box-shadow:0 0 0 3px rgba(59,111,212,0.12);background:#fff}
+.search-box input::placeholder{color:#a0aec0}
+.search-box button{background:linear-gradient(135deg,#3b6fd4,#5a8ee0);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 1px 4px rgba(59,111,212,0.25)}
+.search-box button:hover{box-shadow:0 2px 8px rgba(59,111,212,0.35)}
+
+/* 结果计数 */
+.result-count{padding:0 16px 10px;font-size:12px;color:#94a3b8}
+
+/* 时间轴列表 */
+.timeline{padding:0 16px 24px}
+.tl-item{display:flex;gap:14px;margin-bottom:0;position:relative}
+.tl-line{display:flex;flex-direction:column;align-items:center;width:24px;flex-shrink:0}
+.tl-dot{width:12px;height:12px;background:#3b6fd4;border-radius:50%;z-index:1;flex-shrink:0;margin-top:6px;box-shadow:0 0 0 3px rgba(59,111,212,0.15)}
+.tl-conn{width:2px;flex:1;background:#d0d8e8;margin-top:4px}
 .tl-item:last-child .tl-conn{display:none}
-.tl-card{flex:1;background:#fff;border-radius:10px;padding:14px}
-.tl-card .title{font-size:14px;font-weight:600;color:#333;margin-bottom:6px}
-.tl-card .badge{display:inline-block;background:#e8f0fe;color:#4a6fc4;font-size:11px;padding:2px 8px;border-radius:4px;margin-bottom:8px}
-.tl-card .field{font-size:12px;color:#666;padding:3px 0;display:flex;justify-content:space-between}
-.tl-card .field span{color:#333;font-weight:500}
-.no-data{text-align:center;padding:40px;color:#999;font-size:13px}
-.footer{text-align:center;padding:12px;font-size:10px;color:#cbd5e0}
-.style-toggle{position:fixed;top:60px;right:12px;z-index:100}
-.style-toggle button{background:#fff;border:1.5px solid #e5e5e5;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;color:#666}
-.style-toggle button:hover{border-color:#4a6fc4;color:#4a6fc4}
-.style-menu{position:absolute;right:0;top:30px;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.1);padding:8px;min-width:140px;display:none}
+.tl-item:last-child .tl-dot{box-shadow:0 0 0 3px rgba(59,111,212,0.15)}
+
+/* 卡片 - 仿截图白色卡片 */
+.tl-card{flex:1;background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);border:1px solid #e8ecf2}
+.tl-card .tl-badge{display:inline-block;background:#e8f0f7;color:#3b6fd4;font-size:11px;padding:2px 10px;border-radius:10px;margin-bottom:8px;font-weight:500}
+.tl-card .tl-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+.tl-card .tl-name{font-size:12px;color:#64748b;margin-bottom:10px}
+.tl-card .tl-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.tl-card .tl-field{font-size:12px;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid #f1f5f9}
+.tl-card .tl-field span{color:#334155;font-weight:500;font-size:13px}
+
+/* 无数据 */
+.no-data{text-align:center;padding:60px 20px;color:#94a3b8;font-size:14px}
+
+/* 底部 */
+.footer{text-align:center;padding:20px 16px;font-size:11px;color:#cbd5e0}
+
+/* 风格切换 */
+.style-toggle{position:fixed;top:54px;right:12px;z-index:100}
+.style-toggle button{background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;color:#64748b;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.style-toggle button:hover{border-color:#3b6fd4;color:#3b6fd4}
+.style-menu{position:absolute;right:0;top:32px;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.1);padding:6px;min-width:130px;display:none;border:1px solid #e8ecf2}
 .style-menu.show{display:block}
-.style-menu .opt{padding:8px 12px;font-size:12px;color:#333;cursor:pointer;border-radius:6px}
-.style-menu .opt:hover{background:#f5f6fa;color:#4a6fc4}
-.style-menu .opt.active{background:#e8f0fe;color:#4a6fc4;font-weight:500}
+.style-menu .opt{padding:8px 12px;font-size:12px;color:#475569;cursor:pointer;border-radius:6px;transition:background .15s}
+.style-menu .opt:hover{background:#f0f4f8;color:#3b6fd4}
+.style-menu .opt.active{background:#e8f0f7;color:#3b6fd4;font-weight:500}
+
+@media(max-width:480px){
+  .tl-card .tl-fields{grid-template-columns:1fr}
+  .search-box{flex-direction:column}
+  .search-box label{display:none}
+}
 </style></head>
 <body>
-<div class="nav"><h1>网点派仓班次查询</h1><div class="tag">-- 修改建议联系：ZTH【禁止外传】</div></div>
-<div class="card"><div class="label">网点总数</div><div class="big-num" id="totalNets">0</div><div class="desc">班次数据实时查询系统</div></div>
-<div class="search-box"><label>网点代码</label><input type="text" id="searchInput" placeholder="如 8981A" /><button onclick="doSearch()">查询</button></div>
+<div class="top-bar"><h1>网点派仓班次查询</h1></div>
+<div class="info-card">
+  <div class="card-label">网点总数</div>
+  <div class="card-value" id="totalNets">0</div>
+  <div class="card-desc">班次数据实时查询系统</div>
+</div>
+<div class="search-box">
+  <label>网点代码</label>
+  <input type="text" id="searchInput" placeholder="如 8981A" />
+  <button onclick="doSearch()">查询</button>
+</div>
+<div class="result-count" id="resultCount"></div>
 <div class="timeline" id="timeline"></div>
 <div class="no-data" id="noData" style="display:none">未找到匹配的班次数据</div>
 <div class="footer">网点派仓班次查询系统 -- 修改建议联系：ZTH【禁止外传】</div>
@@ -54,7 +92,7 @@ var STYLES = [{"name":"审批流程","url":"style-approval-preview.html"},{"name
 (function(){var n={};DATA.forEach(function(r){if(r[4])n[r[4]]=true});document.getElementById("totalNets").textContent=Object.keys(n).length})();
 (function(){var menu=document.getElementById("styleMenu");STYLES.forEach(function(s,i){var d=document.createElement("div");d.className="opt"+(i===0?" active":"");d.textContent=s.name;d.setAttribute("data-idx",i);d.onclick=function(){document.querySelectorAll(".opt").forEach(function(o){o.classList.remove("active")});d.classList.add("active");location.href=STYLES[i].url;};menu.appendChild(d)})})();
 function toggleMenu(){document.getElementById("styleMenu").classList.toggle("show")}
-function doSearch(){var kw=document.getElementById("searchInput").value.trim().toUpperCase();var tl=document.getElementById("timeline");var nd=document.getElementById("noData");tl.innerHTML="";if(!kw){nd.style.display="none";return}var res=DATA.filter(function(r){return r[4]&&r[4].toUpperCase().indexOf(kw)!==-1});if(!res.length){nd.style.display="block";return}nd.style.display="none";res.forEach(function(r,idx){var item=document.createElement("div");item.className="tl-item";item.innerHTML='<div class="tl-line"><div class="tl-dot"></div><div class="tl-conn"></div></div><div class="tl-card"><div class="badge">班次 '+idx+'</div><div class="title">'+(r[4]||'')+' · '+ (r[5]||'')+'</div><div class="field">班次标识 <span>'+(r[2]||'')+'</span></div><div class="field">开始时间 <span>'+ft(r[9])+'</span></div><div class="field">到车时间 <span>'+ft(r[10])+'</span></div><div class="field">结束时间 <span>'+ft(r[11])+'</span></div></div>';tl.appendChild(item)})}
+function doSearch(){var kw=document.getElementById("searchInput").value.trim().toUpperCase();var tl=document.getElementById("timeline");var nd=document.getElementById("noData");var cnt=document.getElementById("resultCount");tl.innerHTML="";if(!kw){cnt.textContent="";nd.style.display="none";return}var res=DATA.filter(function(r){return r[4]&&r[4].toUpperCase().indexOf(kw)!==-1});if(!res.length){nd.style.display="block";cnt.textContent="共 0 条结果";return}nd.style.display="none";cnt.textContent="共 "+res.length+" 条结果";res.forEach(function(r,idx){var item=document.createElement("div");item.className="tl-item";item.innerHTML='<div class="tl-line"><div class="tl-dot"></div><div class="tl-conn"></div></div><div class="tl-card"><div class="tl-badge">班次 '+idx+'</div><div class="tl-title">'+(r[4]||'')+'</div><div class="tl-name">'+(r[5]||'')+'</div><div class="tl-fields"><div class="tl-field">班次标识 <span>'+(r[2]||'')+'</span></div><div class="tl-field">开始时间 <span>'+ft(r[9])+'</span></div><div class="tl-field">到车时间 <span>'+ft(r[10])+'</span></div><div class="tl-field">结束时间 <span>'+ft(r[11])+'</span></div></div></div>';tl.appendChild(item)})}
 function ft(t){if(!t)return"";var s=String(t);if(s.length===4&&/^\d{4}$/.test(s))return s.substring(0,2)+":"+s.substring(2);return s}
 document.getElementById("searchInput").addEventListener("keydown",function(e){if(e.key==="Enter")doSearch()});
 </script></body></html>
